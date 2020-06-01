@@ -1,7 +1,76 @@
 # TITLE 
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
-Text 
+## **Environment**: Visual Studio 16 2019 Win64
+
+### Building the project
+
+Assuming you have followed the moja flint documentation to build using the vcpkg method, the commands below should build your example project solution.
+
+**NOTE**: Paths used in commands may be different on your system.
+
+```powershell
+# Create a build folder under the Source folder
+mkdir -p Source\build
+cd Source\build
+
+cmake -G "Visual Studio 16 2019" -DCMAKE_INSTALL_PREFIX=C:\Development\Software\moja -DVCPKG_TARGET_TRIPLET=x64-windows -DENABLE_TESTS=OFF -DOPENSSL_ROOT_DIR=c:\Development\moja-global\vcpkg\installed\x64-windows -DCMAKE_TOOLCHAIN_FILE=c:\Development\moja-global\vcpkg\scripts\buildsystems\vcpkg.cmake ..
+```
+
+### Running the project
+
+Running in the IDE and debugging is a little tricky. This could more than likely be resolved with better cmake  setups. But for now there is some setup that can make running and debugging work.
+
+The issue is we want to run with the `moja.cli.exe` from the moja.FLINT project, but debug in our current IDE (FLINT.example).
+
+The solution is to use properties to setup a Debug run in the IDE, making the command run `moja.cli.exe`.
+
+**NOTE** : All paths used below with `C:\Development\moja-global` will need to be modified to match your system build location of the moja project.
+
+![VS2019_Debugsetup2](Documentation/VS2019_Debugsetup2.png)
+
+#### Test Module Example
+
+The settings required in VS2019 are:
+
+```
+# Command
+C:\Development\moja-global\FLINT\Source\build\bin\Debug\moja.cli.exe
+
+# Command Args
+--config config\point_example.json --config config\libs.base.win.json  --logging_config config\logging.debug_on.conf
+ 
+# Working Directory
+..\..\..\Run_Env
+
+# Environment
+PATH=C:\Development\moja-global\vcpkg\installed\x64-windows\debug\bin;C:\Development\moja-global\FLINT\Source\build\bin\Debug;%PATH%
+LOCAL_LIBS=$(OutDir)
+```
+
+With Envs: `PATH` for various libraries built in the Moja stage and `LOCAL_LIBS` so we can modify the explicit path for our example config to load libraries from this vs build (the default is the same location as the EXE).
+
+To match this, the example point config uses an environment variable in the library path:
+
+```json
+{
+  "Libraries": {
+    "moja.flint.example.base": {
+      "library": "moja.flint.example.based.dll",
+      "path": "%LOCAL_LIBS%",
+      "type": "external"
+    }
+  }
+}
+```
+
+#### Agri example template
+
+```powershell
+# Command Args
+--config config\agri_example.json --config config\libs.base_agri.win.json --logging_config config\logging.debug_on.conf
+```
+ 
 
 ## How to Get Involved?  
 
