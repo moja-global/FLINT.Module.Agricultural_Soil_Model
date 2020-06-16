@@ -1,4 +1,4 @@
-# TITLE 
+# FLINT Agricultural Soil Module
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
 ## **Environment**: Visual Studio 16 2019 Win64
@@ -36,7 +36,7 @@ The settings required in VS2019 are:
 C:\Development\moja-global\FLINT\Source\build\bin\Debug\moja.cli.exe
 
 # Command Args
---config config\point_example.json --config config\libs.base.win.json  --logging_config config\logging.debug_on.conf
+--config config\agri_point.json --config config\libs.base_agri.win.json  --logging_config logging.debug_on.conf
  
 # Working Directory
 ..\..\..\Run_Env
@@ -60,15 +60,7 @@ To match this, the example point config uses an environment variable in the libr
     }
   }
 }
-```
-
-#### Agri example template
-
-```powershell
-# Command Args
---config config\agri_example.json --config config\libs.base_agri.win.json --logging_config config\logging.debug_on.conf
-```
- 
+``` 
 
 ## How to Get Involved?  
 
