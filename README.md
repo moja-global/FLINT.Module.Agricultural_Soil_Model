@@ -54,7 +54,7 @@ To match this, the example point config uses an environment variable in the libr
 {
   "Libraries": {
     "moja.flint.example.base": {
-      "library": "moja.flint.example.based.dll",
+      "library": "moja.flint.example.agrid.dll",
       "path": "%LOCAL_LIBS%",
       "type": "external"
     }
