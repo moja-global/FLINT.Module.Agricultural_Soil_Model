@@ -27,13 +27,16 @@ set(PROJECT_SOURCES
 set(PROJECT_MODULE_HEADERS
 	#include/moja/flint/example/${PACKAGE}/xxx.h
 	#include/moja/flint/example/${PACKAGE}/errorscreenwriter.h
-	include/moja/flint/example/${PACKAGE}/test.h
+	include/moja/flint/example/${PACKAGE}/disturbanceeventmodule.h
+	include/moja/flint/example/${PACKAGE}/disturbanceevents.h
+	include/moja/flint/example/${PACKAGE}/fertevents.h
 )
  
 set(PROJECT_MODULE_SOURCES
 	#src/xxx.cpp
 	#src/errorscreenwriter.cpp
-	src/test.cpp
+	src/disturbanceeventmodule.cpp
+	src/fertevents.cpp
 )
  
 set(PROJECT_TRANSFORM_HEADERS

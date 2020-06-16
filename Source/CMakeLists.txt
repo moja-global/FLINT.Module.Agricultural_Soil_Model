@@ -17,7 +17,6 @@ set(MOJA_FLINT_EXAMPLE_VERSION "${MOJA_FLINT_EXAMPLE_VERSION_MAJOR}.${MOJA_FLINT
 set(MOJA_FLINT_EXAMPLE_COMPONENTS "")
 
 # Allow enabling and disabling components
-option(ENABLE_MOJA_FLINT_EXAMPLE_BASE	    "moja.flint.example.base"			ON)
 option(ENABLE_MOJA_FLINT_EXAMPLE_AGRI	    "moja.flint.example.agri"			ON)
 
 # Put the libaries and binaries that get built into directories at the
@@ -75,11 +74,6 @@ if (CMAKE_SYSTEM MATCHES "Linux" )
   #add_definitions( -D_XOPEN_SOURCE=500 -D_REENTRANT -D_THREAD_SAFE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64)
   #set(SYSLIBS  pthread dl rt)
 endif(CMAKE_SYSTEM MATCHES "Linux" )
-
-if(ENABLE_MOJA_FLINT_EXAMPLE_BASE)
-add_subdirectory(moja.flint.example.base)
-list(APPEND MOJA_FLINT_EXAMPLE_COMPONENTS "moja.flint.example.base")
-endif()
 
 if(ENABLE_MOJA_FLINT_EXAMPLE_AGRI)
 add_subdirectory(moja.flint.example.agri)

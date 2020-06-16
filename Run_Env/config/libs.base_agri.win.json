@@ -1,10 +1,5 @@
 {
     "Libraries": {
-        "moja.flint.example.base": {
-        "library": "moja.flint.example.based.dll",
-        "path": "%LOCAL_LIBS%",
-        "type": "external"
-        },
         "moja.flint.example.agri": {
         "library": "moja.flint.example.agrid.dll",
         "path": "%LOCAL_LIBS%",

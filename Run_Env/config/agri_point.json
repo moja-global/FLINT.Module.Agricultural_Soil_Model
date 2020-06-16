@@ -1,0 +1,119 @@
+{
+  "LocalDomain": {
+    "type": "point",
+    "start_date": "1920/01/01",
+    "end_date": "1920/12/31",
+    "sequencer_library": "internal.flint",
+    "sequencer": "CalendarAndEventFlintDataSequencer",
+    "simulateLandUnit": "simulateLandUnit",
+    "landUnitBuildSuccess": "landUnitBuildSuccess"
+  },
+  "operationManager": {
+    "name": "Simple",
+    "use_kahan": false,
+    "allow_zero_result_transfers": false
+  },
+  "Pools": ["atmosphere", "initial_values"],
+  "Variables": [
+    {
+      "localDomainId": 1
+    },
+    {
+      "simulateLandUnit": true
+    },
+    {
+      "landUnitBuildSuccess": true
+    },
+    {
+      "landUnitArea": 1.0
+    },
+    {
+      "EF_1": {
+        "default": 0.01,
+        "dry": 0.005,
+        "synth_wet": 0.016,
+        "wet": 0.006
+      }
+    },
+    {
+      "climate": "dry"
+    },
+    {
+      "spatialLocationInfo": {
+        "flintdata": {
+          "library": "internal.flint",
+          "type": "SpatialLocationInfo",
+          "settings": {}
+        }
+      }
+    },
+    {
+      "eventqueue": {
+        "flintdata": {
+          "library": "internal.flint",
+          "type": "EventQueue",
+          "settings": {
+            "events": [
+              {
+                "date": {
+                  "$date": "1920/02/01"
+                },
+                "id": 1,
+                "type": "agri.NFertEvent",
+                "name": "Synthetic fertilizer",
+                "quantity": 100,
+                "runtime": 1
+              },
+              {
+                "date": {
+                  "$date": "1920/05/01"
+                },
+                "id": 2,
+                "type": "agri.NFertEvent",
+                "name": "Organic fertilizer",
+                "quantity": 200,
+                "runtime": 1
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "Modules": {
+    "TransactionManagerEndOfStepModule": {
+      "library": "internal.flint",
+      "order": 1
+    },
+    "CalendarAndEventFlintDataSequencer": {
+      "library": "internal.flint",
+      "order": 2
+    },
+    "DisturbanceEventModule": {
+      "enabled": true,
+      "library": "moja.flint.example.agri",
+      "order": 3
+    },
+    "OutputerStream": {
+      "enabled": true,
+      "library": "internal.flint",
+      "order": 5,
+      "settings": {
+        "output_filename": "Example_Agri_Point_Stock.csv",
+        "output_to_screen": true,
+        "output_info_header": true,
+        "output_on_postdisturbanceevent": true
+      }
+    },
+    "OutputerStreamFlux": {
+      "enabled": true,
+      "library": "internal.flint",
+      "order": 6,
+      "settings": {
+        "output_filename": "Example_Agri_Point_Flux.csv",
+        "output_to_screen": true,
+        "output_info_header": true
+      }
+    }
+  }
+}

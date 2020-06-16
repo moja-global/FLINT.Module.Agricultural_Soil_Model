@@ -1,0 +1,47 @@
+<2020-06-17 00:34:16.197731> (info) - Config has files: 2
+<2020-06-17 00:34:16.203716> (info) - Using Logging Configuration: logging.debug_on.conf
+<2020-06-17 00:34:16.204714> (info) - Using configurations: 
+<2020-06-17 00:34:16.204714> (info) - config\agri_point.json
+<2020-06-17 00:34:16.204714> (info) - config\libs.base_agri.win.json
+<2020-06-17 00:34:16.252584> (debug) - moja::flint::configuration::JSON2ConfigurationProvider::createLibraries(434) - details (moja.flint.example.agri): path - %LOCAL_LIBS%, filename -moja.flint.example.agrid.dll
+<2020-06-17 00:34:16.253582> (debug) - moja::flint::configuration::Configuration::addLibrary(105) - details (moja.flint.example.agri): path - %LOCAL_LIBS%, filename -moja.flint.example.agrid.dll
+<2020-06-17 00:34:16.303448> (info) - Using operation manager: 
+<2020-06-17 00:34:16.314419> (debug) - moja::flint::LibraryManager::LibraryManager(46) - LibraryManager: contructor no args
+<2020-06-17 00:34:16.316414> (debug) - moja::flint::LibraryManager::LoadInternalLibrary(427) - LibraryMLoadInternalLibraryanager: entered
+<2020-06-17 00:34:16.316414> (debug) - moja::flint::LibraryManager::LoadInternalLibrary(431) - LibraryMLoadInternalLibraryanager: calling AddLibrary : internal.flint
+<2020-06-17 00:34:16.317412> (debug) - moja::flint::LibraryManager::AddLibrary(78) - AddLibrary: entered : internal.flint
+<2020-06-17 00:34:16.317412> (debug) - moja::flint::LibraryManager::LoadInternalLibrary(441) - LibraryMLoadInternalLibraryanager: calling registrations
+<2020-06-17 00:34:16.317412> (debug) - moja::flint::getFlintModuleRegistrations(107) - getFlintModuleRegistrations: entered
+<2020-06-17 00:34:16.318409> (debug) - moja::flint::getFlintModuleRegistrations(166) - getFlintModuleRegistrations: exit - 20
+<2020-06-17 00:34:16.318409> (debug) - moja::flint::getFlintTransformRegistrations(171) - getFlintTransformRegistrations: entered
+<2020-06-17 00:34:16.319406> (debug) - moja::flint::getFlintTransformRegistrations(194) - getFlintTransformRegistrations: exit - 9
+<2020-06-17 00:34:16.319406> (debug) - moja::flint::getFlintFlintDataRegistrations(199) - getFlintFlintDataRegistrations: entered
+<2020-06-17 00:34:16.319406> (debug) - moja::flint::getFlintFlintDataRegistrations(219) - getFlintFlintDataRegistrations: exit - 8
+<2020-06-17 00:34:16.321401> (debug) - moja::flint::getFlintFlintDataFactoryRegistrations(224) - getFlintFlintDataFactoryRegistrations: entered
+<2020-06-17 00:34:16.321401> (debug) - moja::flint::getFlintFlintDataFactoryRegistrations(230) - getFlintFlintDataFactoryRegistrations: exit - 1
+<2020-06-17 00:34:16.332425> (debug) - moja::flint::getProviderRegistrations(235) - getProviderRegistrations: entered
+<2020-06-17 00:34:16.333370> (debug) - moja::flint::getProviderRegistrations(250) - getProviderRegistrations: exit - 2
+<2020-06-17 00:34:16.333370> (debug) - moja::flint::LibraryManager::RegisterProviders(407) - RegisterProviders: entered : internal.flint : count 2
+<2020-06-17 00:34:16.334366> (debug) - moja::flint::LibraryManager::RegisterProviders(411) - RegisterProviders: loop: 0
+<2020-06-17 00:34:16.334366> (debug) - moja::flint::LibraryManager::RegisterProviders(416) - RegisterProviders: loop: internal.flint : RasterTiled
+<2020-06-17 00:34:16.337358> (debug) - moja::flint::LibraryManager::RegisterProviders(411) - RegisterProviders: loop: 1
+<2020-06-17 00:34:16.342345> (debug) - moja::flint::LibraryManager::RegisterProviders(416) - RegisterProviders: loop: internal.flint : SQLite
+<2020-06-17 00:34:16.343342> (debug) - moja::flint::getProviderRegistrations(235) - getProviderRegistrations: entered
+<2020-06-17 00:34:16.343342> (debug) - moja::flint::getProviderRegistrations(250) - getProviderRegistrations: exit - 2
+<2020-06-17 00:34:16.344340> (debug) - moja::flint::LibraryManager::RegisterProviders(407) - RegisterProviders: entered : internal.flint : count 2
+<2020-06-17 00:34:16.348330> (debug) - moja::flint::LibraryManager::RegisterProviders(411) - RegisterProviders: loop: 0
+<2020-06-17 00:34:16.353316> (debug) - moja::flint::LibraryManager::RegisterProviders(416) - RegisterProviders: loop: internal.flint : RasterTiled
+<2020-06-17 00:34:16.355310> (debug) - moja::flint::LibraryManager::RegisterProviders(411) - RegisterProviders: loop: 1
+<2020-06-17 00:34:16.355310> (debug) - moja::flint::LibraryManager::RegisterProviders(416) - RegisterProviders: loop: internal.flint : SQLite
+<2020-06-17 00:34:16.358303> (debug) - moja::flint::LocalDomainControllerBase::configure(71) - details (moja.flint.example.agri): path - %LOCAL_LIBS%, filename -moja.flint.example.agrid.dll
+<2020-06-17 00:34:16.360299> (debug) - moja::flint::LibraryManager::AddLibrary(78) - AddLibrary: entered : moja.flint.example.agri
+<2020-06-17 00:34:16.433110> (debug) - moja::flint::LibraryManager::RegisterProviders(407) - RegisterProviders: entered : moja.flint.example.agri : count 0
+<2020-06-17 00:34:16.450057> (info) - modules loaded: 
+<2020-06-17 00:34:16.450057> (info) - 	library: internal.flint, module name: CalendarAndEventFlintDataSequencer
+<2020-06-17 00:34:16.453050> (info) - 	library: internal.flint, module name: OutputerStream
+<2020-06-17 00:34:16.456043> (info) - 	library: internal.flint, module name: OutputerStreamFlux
+<2020-06-17 00:34:16.462026> (info) - 	library: internal.flint, module name: TransactionManagerEndOfStepModule
+<2020-06-17 00:34:16.463022> (info) - 	library: moja.flint.example.agri, module name: DisturbanceEventModule
+<2020-06-17 00:34:16.466017> (info) - Operation manager: Simple, Version: 1.0, Config: (Kahan[OFF], ZeroTransfers[OFF], AllowNegativeTransfers[ON], WarnNegativeTransfers[OFF])
+<2020-06-17 00:34:16.544818> (debug) - moja::flint::example::agri::DisturbanceEventModule::simulate(54) - Synthetic fertilizer Event Occured
+<2020-06-17 00:34:16.573726> (debug) - moja::flint::example::agri::DisturbanceEventModule::simulate(54) - Organic fertilizer Event Occured
