@@ -1,0 +1,9 @@
+{
+    "Libraries": {
+        "moja.flint.example.agri": {
+        "library": "moja.flint.example.agrid.dll",
+        "path": "%LOCAL_LIBS%",
+        "type": "external"
+        }
+    }
+}
