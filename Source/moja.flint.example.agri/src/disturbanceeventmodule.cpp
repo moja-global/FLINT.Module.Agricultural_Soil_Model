@@ -27,11 +27,11 @@ void DisturbanceEventModule::subscribe(NotificationCenter& notificationCenter) {
 
 void DisturbanceEventModule::onTimingInit() {
    atmosphere_ = _landUnitData->getPool("atmosphere");
-   initial_values = _landUnitData->getPool("initial_values");
+   soil_ = _landUnitData->getPool("soil");
    try{
       climate = _landUnitData->getVariable("climate")->value().convert<std::string>();
    }
-   catch(const std::exception& e){
+   catch(const std::exception&){
       climate = "default";
    }
 }
@@ -53,7 +53,7 @@ void DisturbanceEventModule::simulate(const NFertEvent& fert) {
    }
    MOJA_LOG_DEBUG << fert.name + " Event Occured";
    auto operation = _landUnitData->createStockOperation();
-   operation->addTransfer(initial_values, atmosphere_, (fert.quantity * EF_1_value) / fert.runtime);
+   operation->addTransfer(soil_, atmosphere_, (fert.quantity * EF_1_value) / fert.runtime);
    _landUnitData->submitOperation(operation);
 }
 
