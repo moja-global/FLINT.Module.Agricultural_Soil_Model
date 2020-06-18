@@ -28,6 +28,7 @@ class AGRI_API DisturbanceEventModule : public flint::ModuleBase, DisturbanceEve
    void simulate(const NFertEvent& fert) override;
 
    const flint::IPool* atmosphere_;
+   const flint::IPool* soil_;
    const flint::IPool* initial_values;
    std::string climate;
 };
