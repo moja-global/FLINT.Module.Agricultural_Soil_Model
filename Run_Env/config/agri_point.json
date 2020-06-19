@@ -62,7 +62,7 @@
                 "type": "agri.NFertEvent",
                 "name": "Synthetic fertilizer",
                 "quantity": 100,
-                "runtime": 1
+                "runtime": 5
               },
               {
                 "date": {
@@ -72,7 +72,7 @@
                 "type": "agri.NFertEvent",
                 "name": "Organic fertilizer",
                 "quantity": 200,
-                "runtime": 1
+                "runtime": 5
               }
             ]
           }

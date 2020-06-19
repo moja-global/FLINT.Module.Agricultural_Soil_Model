@@ -1,8 +1,26 @@
 OutputerStreamFlux
 ==========================================================================
+<<<<<<< Updated upstream
 Started:2020-06-16:19:04:16.500890
 ==========================================================================
 step,step date,module name,disturbance_type,source pool,sink pool,value
 ==========================================================================
 Finished:2020-06-16:19:04:16.664943
+=======
+Started:2020-06-19:10:43:33.736997
+==========================================================================
+step,step date,module name,disturbance_type,source pool,sink pool,value
+14,1921-02-01:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.1
+14,1921-02-02:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.1
+14,1921-02-03:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.1
+14,1921-02-04:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.1
+14,1921-02-05:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.1
+29,1922-05-01:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.2
+29,1922-05-02:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.2
+29,1922-05-03:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.2
+29,1922-05-04:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.2
+29,1922-05-05:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.2
+==========================================================================
+Finished:2020-06-19:10:43:33.830922
+>>>>>>> Stashed changes
 ==========================================================================

@@ -10,6 +10,7 @@ namespace flint {
 namespace example {
 namespace agri {
 class NFertEvent;
+class EmissionEvent;
 
 class AGRI_API DisturbanceEventModule : public flint::ModuleBase, DisturbanceEventHandler {
   public:
@@ -19,13 +20,14 @@ class AGRI_API DisturbanceEventModule : public flint::ModuleBase, DisturbanceEve
    void configure(const DynamicObject& config) override;
    void subscribe(NotificationCenter& notificationCenter) override;
 
-   //void onPreTimingSequence() override; 
+   void onPreTimingSequence() override; 
    void onTimingInit() override;
 
    void disturbanceEventHandler(const flint::EventQueueItem* event);  // special handler for events
 
   private:
    void simulate(const NFertEvent& fert) override;
+   void simulate(const EmissionEvent& fert) override;
 
    const flint::IPool* atmosphere_;
    const flint::IPool* initial_values;

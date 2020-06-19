@@ -12,12 +12,14 @@ namespace example {
 namespace agri {
 
 class NFertEvent;
+class EmissionEvent;
 
 class AGRI_API DisturbanceEventHandler {
   public:
    virtual ~DisturbanceEventHandler() {}
 
-   virtual void simulate(const NFertEvent& fire) {}
+   virtual void simulate(const NFertEvent& fert) {}
+   virtual void simulate(const EmissionEvent& fert) {}
 };
 
 class AGRI_API DisturbanceEventBase : public flint::EventBase {

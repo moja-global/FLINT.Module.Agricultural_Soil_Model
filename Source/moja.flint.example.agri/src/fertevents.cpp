@@ -14,6 +14,7 @@ namespace agri {
 std::shared_ptr<flint::IFlintData> createFertEventsFactory(const std::string& eventTypeStr, int id,
                                                              const std::string& name, const DynamicObject& other) {
    if (eventTypeStr == "agri.NFertEvent") return std::make_shared<NFertEvent>(id, name);
+   if (eventTypeStr == "agri.EmissionEvent") return std::make_shared<EmissionEvent>(id, name);
    return nullptr;
 }
 
@@ -32,6 +33,22 @@ DynamicObject NFertEvent::exportObject() const {
 }
 
 void NFertEvent::simulate(DisturbanceEventHandler& event_handler) const { event_handler.simulate(*this); }
+
+void EmissionEvent::configure(DynamicObject config, const flint::ILandUnitController& landUnitController,
+                                 datarepository::DataRepository& dataRepository) {
+   DisturbanceEventBase::configure(config, landUnitController, dataRepository);
+   quantity = config["quantity"];
+   runtime = config["runtime"];
+}
+
+DynamicObject EmissionEvent::exportObject() const {
+   auto object = DisturbanceEventBase::exportObject();
+   object["quantity"] = quantity;
+   object["runtime"] = runtime;
+   return object;
+}
+
+void EmissionEvent::simulate(DisturbanceEventHandler& event_handler) const { event_handler.simulate(*this); }
 
 }  // namespace chapman_richards
 }  // namespace modules
