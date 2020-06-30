@@ -26,6 +26,19 @@ class NFertEvent final : public DisturbanceEventBase {
    int runtime;
 };
 
+class EmissionEvent final : public DisturbanceEventBase {
+  public:
+   EmissionEvent(int id, const std::string& name) : DisturbanceEventBase(id, "agri.EmissionEvent", name) {}
+   virtual ~EmissionEvent() = default;
+
+   void configure(DynamicObject config, const flint::ILandUnitController& landUnitController,
+                  datarepository::DataRepository& dataRepository) override;
+   DynamicObject exportObject() const override;
+   void simulate(DisturbanceEventHandler& event_handler) const override;
+   double quantity;
+   int runtime;
+};
+
 }  // namespace chapman_richards
 }  // namespace modules
 }  // namespace moja
