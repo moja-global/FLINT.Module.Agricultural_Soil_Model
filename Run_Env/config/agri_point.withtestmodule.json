@@ -14,9 +14,12 @@
     }
   },
   "Pools": [
-    "initial_values",
-    "atmosphere",
-    "soil"
+    { "initial_values": 0.0 },
+    { "atmosphere": 0.0 },
+    { "soil": 0.0 },
+    { "Pool 1": 100.0 },
+    { "Pool 2": 100.0 },
+    { "Pool 3": 100.0 }
   ],
   "Variables": [
     {
@@ -66,7 +69,7 @@
                 "type": "agri.NFertEvent",
                 "name": "Synthetic fertilizer",
                 "quantity": 100,
-                "runtime": 5
+                "runtime": 1
               },
               {
                 "date": {
@@ -76,12 +79,21 @@
                 "type": "agri.NFertEvent",
                 "name": "Organic fertilizer",
                 "quantity": 200,
-                "runtime": 5
+                "runtime": 1
               }
             ]
           }
         }
       }
+    },
+    {
+      "variable 1": 1.0
+    },
+    {
+      "variable 2": 1.0
+    },
+    {
+      "variable 3": 1.0
     }
   ],
   "Modules": {
@@ -93,18 +105,34 @@
       "library": "internal.flint",
       "order": 2
     },
+    "TestModule1": {
+      "enabled": true,
+      "library": "internal.flint",
+      "order": 3,
+      "settings": {
+        "ratio_1": 0.4,
+        "ratio_2": 0.3,
+        "ratio_3": 0.6,
+        "varible_1": "variable 1",
+        "varible_2": "variable 2",
+        "varible_3": "variable 3",
+        "pool_1": "Pool 1",
+        "pool_2": "Pool 2",
+        "pool_3": "Pool 3"
+      }
+    },
     "DisturbanceEventModule": {
       "enabled": true,
       "library": "moja.flint.example.agri",
       "order": 4
     },
     "OutputerStream": {
-      "enabled": true,
+      "enabled": false,
       "library": "internal.flint",
       "order": 5,
       "settings": {
         "output_filename": "Example_Agri_Point_Stock.csv",
-        "output_to_screen": false,
+        "output_to_screen": true,
         "output_info_header": true,
         "output_on_postdisturbanceevent": true
       }

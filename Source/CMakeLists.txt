@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10.0)
 
-project(flint.example VERSION 1.0.0 LANGUAGES CXX)
+project(flint.GSoC_Soil VERSION 1.0.0 LANGUAGES CXX)
 
 #turn on using solution folders
 set_property( GLOBAL PROPERTY USE_FOLDERS ON)
