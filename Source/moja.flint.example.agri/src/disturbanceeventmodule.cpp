@@ -61,10 +61,10 @@ void DisturbanceEventModule::onPreTimingSequence() {
 void DisturbanceEventModule::onTimingInit() {
    atmosphere_ = _landUnitData->getPool("atmosphere");
    soil_ = _landUnitData->getPool("soil");
-   try{
+   try {
       climate = _landUnitData->getVariable("climate")->value().convert<std::string>();
    }
-   catch(const std::exception&){
+   catch(const std::exception&) {
       climate = "default";
    }
 }
@@ -78,7 +78,7 @@ void DisturbanceEventModule::simulate(const NFertEvent& fert) {
    else if(climate == "dry"){
       EF_1_value = EF_1["dry"];
    }
-   else if(climate == "wet" && fert.name == "Synthetic emission"){
+   else if(climate == "wet" && fert.name == "Synthetic fertilizer"){
       EF_1_value = EF_1["synth_wet"];
    }
    else{

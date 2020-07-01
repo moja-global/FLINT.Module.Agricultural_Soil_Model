@@ -1,0 +1,37 @@
+{
+    "Providers": {
+        "SQLite": {
+            "type": "SQLite",
+            "path": "data/FLINTagri.db"
+        },
+        "FlintTiled": {
+            "type": "RasterTiledGDAL",
+            "library": "moja.modules.gdal",
+            "tileLatSize": 1.0,
+            "tileLonSize": 1.0,
+            "blockLatSize": 0.1,
+            "blockLonSize": 0.1,
+            "cellLatSize": 0.00025,
+            "cellLonSize": 0.00025,
+            "layers": [
+            {
+                "name": "zones",
+                "layer_type": "GridLayer",
+                "layer_data": "Int16",
+                "layer_prefix": "",
+                "layer_path": "data/zones.tif",
+                "metadata_required": false,
+                "nodata": 255
+            },
+            {
+                "name": "land_use",
+                "layer_type": "GridLayer",
+                "layer_data": "Int16",
+                "layer_prefix": "",
+                "layer_path": "data/land_use.tif",
+                "metadata_required": false,
+                "nodata": 255
+            }]
+        }
+    }
+}

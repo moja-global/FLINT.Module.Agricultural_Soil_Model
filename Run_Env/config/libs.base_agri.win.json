@@ -1,9 +1,14 @@
 {
     "Libraries": {
+    	"moja.modules.gdal": {
+            "library": "moja.modules.gdald.dll",
+            "path": "C:/Users/sulay/Desktop/moja-global/FLINT/Source/build/bin/Debug",
+            "type": "external"
+        },
         "moja.flint.example.agri": {
-        "library": "moja.flint.example.agrid.dll",
-        "path": "%LOCAL_LIBS%",
-        "type": "external"
+	        "library": "moja.flint.example.agrid.dll",
+	        "path": "%LOCAL_LIBS%",
+	        "type": "external"
         }
     }
 }

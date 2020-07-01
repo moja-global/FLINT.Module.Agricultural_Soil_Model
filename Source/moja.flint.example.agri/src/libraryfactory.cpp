@@ -4,6 +4,7 @@
 #include "moja/flint/example/agri/disturbanceevents.h"
 #include "moja/flint/example/agri/disturbanceeventmodule.h"
 #include "moja/flint/example/agri/fertevents.h"
+#include "moja/flint/example/agri/buildlandunitmodule.h"
 // Transforms
 
 // Flint Data
@@ -30,6 +31,8 @@ extern "C" {
 	MOJA_LIB_API int getModuleRegistrations(ModuleRegistration* outModuleRegistrations) {
 		int index = 0;
 		outModuleRegistrations[index++] = ModuleRegistration{ "DisturbanceEventModule", []() -> flint::IModule* { return new DisturbanceEventModule(); }};
+		outModuleRegistrations[index++] = ModuleRegistration{ "BuildLandUnitModule", []() -> flint::IModule* { return new BuildLandUnitModule(); }};
+		
 		return index;
 	}
 

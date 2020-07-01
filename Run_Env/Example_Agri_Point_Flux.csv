@@ -1,0 +1,18 @@
+OutputerStreamFlux
+==========================================================================
+Started:2020-07-01:19:07:26.236517
+==========================================================================
+step,step date,module name,disturbance_type,source pool,sink pool,value
+2,2000-02-01:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.1
+2,2000-02-02:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.1
+2,2000-02-03:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.1
+2,2000-02-04:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.1
+2,2000-02-05:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.1
+29,2002-05-01:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.2
+29,2002-05-02:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.2
+29,2002-05-03:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.2
+29,2002-05-04:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.2
+29,2002-05-05:12:00:00.000000,DisturbanceEventModule,soil,atmosphere,0.2
+==========================================================================
+Finished:2020-07-01:19:07:26.373302
+==========================================================================

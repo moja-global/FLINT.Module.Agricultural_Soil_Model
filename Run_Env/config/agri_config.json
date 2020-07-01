@@ -1,0 +1,179 @@
+{
+  "LocalDomain": {
+    "type": "spatial_tiled",
+    "start_date": "2000/01/01",
+    "end_date": "2004/12/31",
+    "sequencer_library": "internal.flint",
+    "sequencer": "CalendarAndEventFlintDataSequencer",
+    "simulateLandUnit": "simulateLandUnit",
+    "landUnitBuildSuccess": "landUnitBuildSuccess",   
+    "landscape": {
+      "iteration_type": "BlockIndex",
+      "num_threads": 0,
+      "provider": "FlintTiled",
+      "comment3": "This is an example of how to run the a single block of Dominica",
+      "blocks": [
+        {
+          "tile_index": 26758,
+          "block_index": 45
+        }
+      ]
+    },
+    "operationManager": {
+      "name": "Simple",
+      "use_kahan": false,
+      "allow_zero_result_transfers": false
+    },
+    "settings": {
+      "sampling_interval": 100
+    }
+  },
+  "Pools": [
+    "initial_values",
+    "atmosphere",
+    "soil"
+  ],
+  "Variables": [
+    {
+      "localDomainId": 1
+    },
+    {
+      "simulateLandUnit": true
+    },
+    {
+      "landUnitBuildSuccess": true
+    },
+    {
+      "landUnitArea": 1.0
+    },
+    {
+      "EF_1": {
+        "default": 0.01,
+        "dry": 0.005,
+        "synth_wet": 0.016,
+        "wet": 0.006
+      }
+    },
+    {
+      "climate" : "dry"
+    },
+    {
+      "spatialLocationInfo": {
+        "flintdata": {
+          "library": "internal.flint",
+          "type": "SpatialLocationInfo",
+          "settings": {}
+        }
+      }
+    },
+    {
+      "eventqueue": {
+        "flintdata": {
+          "library": "internal.flint",
+          "type": "EventQueue"
+        }
+      }
+    },
+    {
+      "FCR_table": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/FCR_table.sql"
+        }
+      }
+    },
+    {
+      "zones": {
+        "transform": {
+          "data_id": "zones",
+          "library": "internal.flint",
+          "provider": "FlintTiled",
+          "type": "LocationIdxFromFlintDataTransform"
+        }
+      }
+    },
+    {
+      "landuse": {
+        "transform": {
+            "data_id": "land_use",
+            "library": "internal.flint",
+            "provider": "FlintTiled",
+            "type": "LocationIdxFromFlintDataTransform"
+        }
+      }
+    }
+  ],
+  "Modules": {
+    "TransactionManagerEndOfStepModule": {
+      "library": "internal.flint",
+      "order": 1
+    },
+    "CalendarAndEventFlintDataSequencer": {
+      "library": "internal.flint",
+      "order": 2
+    },
+    "BuildLandUnitModule": {
+      "enabled": true,        
+      "library": "moja.flint.example.agri",
+      "order": 3
+    },
+    "DisturbanceEventModule": {
+      "enabled": true,
+      "library": "moja.flint.example.agri",
+      "order": 4
+    },
+    "OutputerStream": {
+      "enabled": true,
+      "library": "internal.flint",
+      "order": 5,
+      "settings": {
+        "output_filename": "Example_Agri_Spatial_Stock.csv",
+        "output_to_screen": false,
+        "output_info_header": true,
+        "output_on_postdisturbanceevent": false
+      }
+    },
+    "OutputerStreamFlux": {
+      "enabled": true,
+      "library": "internal.flint",
+      "order": 6,
+      "settings": {
+        "output_filename": "Example_Agri_Spatial_Flux.csv",
+        "output_to_screen": false,
+        "output_info_header": true
+      }
+    },
+    "WriteVariableGeotiff": {
+      "enabled": true,
+      "library": "moja.modules.gdal",
+      "order": 7,
+      "settings": {
+        "output_path": "data/output/results/spatial_outputs/grids",
+        "use_indexes_for_folder_name": true,
+        "items": [
+          {
+            "enabled": true,
+            "data_name": "atmosphere",
+            "pool_name": "atmosphere",
+            "variable_data_type": "float",
+            "on_notification": "OutputStep",
+            "output_annual_only": false,
+            "nodata_value": -9999,
+            "apply_area_adjustment": false
+          },
+          {
+            "enabled": true,
+            "data_name": "simulate_land_unit",
+            "variable_name": "simulateLandUnit",
+            "variable_data_type": "UInt8",
+            "on_notification": "TimingShutdown",
+            "nodata_value": 255,
+            "apply_area_adjustment": true
+          }
+        ]
+      }
+    }
+  }
+}
