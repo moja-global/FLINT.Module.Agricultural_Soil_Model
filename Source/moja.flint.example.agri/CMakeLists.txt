@@ -30,6 +30,7 @@ set(PROJECT_MODULE_HEADERS
 	include/moja/flint/example/${PACKAGE}/disturbanceeventmodule.h
 	include/moja/flint/example/${PACKAGE}/disturbanceevents.h
 	include/moja/flint/example/${PACKAGE}/fertevents.h
+	include/moja/flint/example/${PACKAGE}/buildlandunitmodule.h
 )
  
 set(PROJECT_MODULE_SOURCES
@@ -37,6 +38,7 @@ set(PROJECT_MODULE_SOURCES
 	#src/errorscreenwriter.cpp
 	src/disturbanceeventmodule.cpp
 	src/fertevents.cpp
+	src/buildlandunitmodule.cpp
 )
  
 set(PROJECT_TRANSFORM_HEADERS

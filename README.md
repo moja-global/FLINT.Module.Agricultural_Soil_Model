@@ -35,9 +35,12 @@ The settings required in VS2019 are:
 # Command
 C:\Development\moja-global\FLINT\Source\build\bin\Debug\moja.cli.exe
 
-# Command Args
+# Command Args for point example
 --config config\agri_point.json --config config\libs.base_agri.win.json  --logging_config logging.debug_on.conf
  
+# Command Args for spatial example
+--config config\agri_config.json --config config\libs.base_agri.win.json  --logging_config config\logging.debug_on.conf --config_provider config\provider_agri.json
+
 # Working Directory
 ..\..\..\Run_Env
 
