@@ -7,8 +7,8 @@
 #include <moja/flint/flintexceptions.h>
 #include <moja/flint/iflintdata.h>
 #include <moja/flint/ioperation.h>
-#include <moja/flint/ivariable.h>
 #include <moja/flint/itiming.h>
+#include <moja/flint/ivariable.h>
 
 #include <moja/logging.h>
 #include <moja/notificationcenter.h>
@@ -22,7 +22,7 @@ void DisturbanceEventModule::configure(const DynamicObject& config) {}
 
 void DisturbanceEventModule::subscribe(NotificationCenter& notificationCenter) {
    notificationCenter.subscribe(signals::TimingInit, &DisturbanceEventModule::onTimingInit, *this);
-   notificationCenter.subscribe(signals::DisturbanceEvent, &DisturbanceEventModule::disturbanceEventHandler, *this); 
+   notificationCenter.subscribe(signals::DisturbanceEvent, &DisturbanceEventModule::disturbanceEventHandler, *this);
    notificationCenter.subscribe(signals::PreTimingSequence, &DisturbanceEventModule::onPreTimingSequence, *this);
 }
 
@@ -56,6 +56,8 @@ void DisturbanceEventModule::onPreTimingSequence() {
    for (int i = 0; i < temp.size(); i++) {
       eventQueue->emplace_back(temp[i].first, temp[i].second);
    }
+   std::sort(eventQueue->begin(), eventQueue->end(),
+             [](const flint::EventQueueItem& a, const flint::EventQueueItem& b) -> bool { return a._date < b._date; });
 }
 
 void DisturbanceEventModule::onTimingInit() {
@@ -63,8 +65,7 @@ void DisturbanceEventModule::onTimingInit() {
    soil_ = _landUnitData->getPool("soil");
    try {
       climate = _landUnitData->getVariable("climate")->value().convert<std::string>();
-   }
-   catch(const std::exception&) {
+   } catch (const std::exception&) {
       climate = "default";
    }
 }
@@ -72,16 +73,13 @@ void DisturbanceEventModule::onTimingInit() {
 void DisturbanceEventModule::simulate(const NFertEvent& fert) {
    auto EF_1 = _landUnitData->getVariable("EF_1")->value().extract<DynamicObject>();
    double EF_1_value;
-   if(climate == "default"){
+   if (climate == "default") {
       EF_1_value = EF_1["default"];
-   }
-   else if(climate == "dry"){
+   } else if (climate == "dry") {
       EF_1_value = EF_1["dry"];
-   }
-   else if(climate == "wet" && fert.name == "Synthetic fertilizer"){
+   } else if (climate == "wet" && fert.name == "Synthetic fertilizer") {
       EF_1_value = EF_1["synth_wet"];
-   }
-   else{
+   } else {
       EF_1_value = EF_1["wet"];
    }
    MOJA_LOG_DEBUG << fert.name + " Event Occured";
@@ -93,16 +91,13 @@ void DisturbanceEventModule::simulate(const NFertEvent& fert) {
 void DisturbanceEventModule::simulate(const EmissionEvent& fert) {
    auto EF_1 = _landUnitData->getVariable("EF_1")->value().extract<DynamicObject>();
    double EF_1_value;
-   if(climate == "default"){
+   if (climate == "default") {
       EF_1_value = EF_1["default"];
-   }
-   else if(climate == "dry"){
+   } else if (climate == "dry") {
       EF_1_value = EF_1["dry"];
-   }
-   else if(climate == "wet" && fert.name == "Synthetic emission"){
+   } else if (climate == "wet" && fert.name == "Synthetic emission") {
       EF_1_value = EF_1["synth_wet"];
-   }
-   else{
+   } else {
       EF_1_value = EF_1["wet"];
    }
    auto operation = _landUnitData->createStockOperation();
