@@ -52,6 +52,26 @@
       }
     },
     {
+      "FCR_table": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/FCR_table.sql"
+        }
+      }
+    },
+    {
+      "Cf_table": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/Cf_table.sql"
+        }
+      }
+    },
+    {
       "eventqueue": {
         "flintdata": {
           "library": "internal.flint",
@@ -70,13 +90,26 @@
               },
               {
                 "date": {
-                  "$date": "2002/05/01"
+                  "$date": "2001/05/01"
                 },
                 "id": 2,
                 "type": "agri.NFertEvent",
                 "name": "Organic fertilizer",
                 "quantity": 200,
                 "runtime": 5
+              },
+              {
+                "date": {
+                  "$date": "2002/01/01"
+                },
+                "id": 3,
+                "type": "agri.HarvestEvent",
+                "name": "Winter Wheat",
+                "yield_fresh": 3,
+                "frac_burnt": 0,
+                "frac_renew": 0,
+                "frac_remove": 0,
+                "above_ground_residue": 2
               }
             ]
           }

@@ -39,6 +39,20 @@ class EmissionEvent final : public DisturbanceEventBase {
    int runtime;
 };
 
+class HarvestEvent final : public DisturbanceEventBase {
+  public:
+   HarvestEvent(int id, const std::string& name) : DisturbanceEventBase(id, "agri.HarvestEvent", name) {}
+   virtual ~HarvestEvent() = default;
+
+   void configure(DynamicObject config, const flint::ILandUnitController& landUnitController,
+                  datarepository::DataRepository& dataRepository) override;
+   DynamicObject exportObject() const override;
+   void simulate(DisturbanceEventHandler& event_handler) const override;
+   double yield_fresh;
+   double above_ground_residue;
+   float frac_burnt, frac_renew, frac_remove;
+};
+
 }  // namespace chapman_richards
 }  // namespace modules
 }  // namespace moja

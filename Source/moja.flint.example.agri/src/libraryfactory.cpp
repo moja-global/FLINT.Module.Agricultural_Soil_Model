@@ -32,7 +32,6 @@ extern "C" {
 		int index = 0;
 		outModuleRegistrations[index++] = ModuleRegistration{ "DisturbanceEventModule", []() -> flint::IModule* { return new DisturbanceEventModule(); }};
 		outModuleRegistrations[index++] = ModuleRegistration{ "BuildLandUnitModule", []() -> flint::IModule* { return new BuildLandUnitModule(); }};
-		
 		return index;
 	}
 

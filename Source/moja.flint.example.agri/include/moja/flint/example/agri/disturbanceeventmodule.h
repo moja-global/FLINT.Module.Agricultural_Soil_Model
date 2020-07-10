@@ -11,6 +11,7 @@ namespace example {
 namespace agri {
 class NFertEvent;
 class EmissionEvent;
+class HarvestEvent;
 
 class AGRI_API DisturbanceEventModule : public flint::ModuleBase, DisturbanceEventHandler {
   public:
@@ -28,6 +29,7 @@ class AGRI_API DisturbanceEventModule : public flint::ModuleBase, DisturbanceEve
   private:
    void simulate(const NFertEvent& fert) override;
    void simulate(const EmissionEvent& fert) override;
+   void simulate(const HarvestEvent& harvest) override;
 
    const flint::IPool* atmosphere_;
    const flint::IPool* soil_;
