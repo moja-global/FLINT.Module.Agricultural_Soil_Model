@@ -40,7 +40,18 @@
       }
     },
     {
+      "EF_3": {
+        "cattle_default": 0.004,
+        "cattle_wet": 0.006,
+        "cattle_dry": 0.002,
+        "other": 0.003
+      }
+    },
+    {
       "climate": "dry"
+    },
+    {
+      "region": "Latin America"
     },
     {
       "spatialLocationInfo": {
@@ -68,6 +79,36 @@
           "type": "SQLQueryTransform",
           "provider": "SQLite",
           "queryFile": "config/sql/Cf_table.sql"
+        }
+      }
+    },
+    {
+      "Animal_weights": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/Animal_weights.sql"
+        }
+      }
+    },
+    {
+      "N_Excretion_rate": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/N_Excretion_rate.sql"
+        }
+      }
+    },
+    {
+      "AWMS": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/AWMS.sql"
         }
       }
     },
@@ -110,6 +151,18 @@
                 "frac_renew": 0,
                 "frac_remove": 0,
                 "above_ground_residue": 2
+              },
+              {
+                "date": {
+                  "$date": "2003/01/01"
+                },
+                "id": 3,
+                "type": "agri.PRPEvent",
+                "name": "PRP Event",
+                "animal_type": "Buffalo",
+                "no_livestock": 3,
+                "productivity_class": "high",
+                "use": "Other"
               }
             ]
           }

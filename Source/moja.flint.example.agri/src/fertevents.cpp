@@ -16,6 +16,7 @@ std::shared_ptr<flint::IFlintData> createFertEventsFactory(const std::string& ev
    if (eventTypeStr == "agri.NFertEvent") return std::make_shared<NFertEvent>(id, name);
    if (eventTypeStr == "agri.EmissionEvent") return std::make_shared<EmissionEvent>(id, name);
    if (eventTypeStr == "agri.HarvestEvent") return std::make_shared<HarvestEvent>(id, name);
+   if (eventTypeStr == "agri.PRPEvent") return std::make_shared<PRPEvent>(id, name);
    return nullptr;
 }
 
@@ -74,6 +75,26 @@ DynamicObject HarvestEvent::exportObject() const {
 
 void HarvestEvent::simulate(DisturbanceEventHandler& event_handler) const { event_handler.simulate(*this); }
 
+
+void PRPEvent::configure(DynamicObject config, const flint::ILandUnitController& landUnitController,
+                                 datarepository::DataRepository& dataRepository) {
+   DisturbanceEventBase::configure(config, landUnitController, dataRepository);
+   no_livestock = config["no_livestock"];
+   animal_type = config["animal_type"].extract<const std::string>();
+   productivity_class = config["productivity_class"].extract<const std::string>();
+   use = config["use"].extract<const std::string>();
+}
+
+DynamicObject PRPEvent::exportObject() const {
+   auto object = DisturbanceEventBase::exportObject();
+   object["no_livestock"] = no_livestock;
+   object["animal_type"] = animal_type;
+   object["productivity_class"] = productivity_class;
+   object["use"] = use;
+   return object;
+}
+
+void PRPEvent::simulate(DisturbanceEventHandler& event_handler) const { event_handler.simulate(*this); }
 }  // namespace chapman_richards
 }  // namespace modules
 }  // namespace moja
