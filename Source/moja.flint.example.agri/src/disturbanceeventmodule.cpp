@@ -153,6 +153,170 @@ void DisturbanceEventModule::simulate(const HarvestEvent& harvest) {
    _landUnitData->submitOperation(operation);
 }
 
+
+void DisturbanceEventModule::simulate(const PRPEvent& prp) {
+   MOJA_LOG_DEBUG << "PRPEvent occured";
+   auto EF_3 = _landUnitData->getVariable("EF_3")->value().extract<DynamicObject>();
+   double EF_3_value;
+   if (prp.animal_type == "Dairy cattle" || prp.animal_type == "Other cattle") {
+      if (climate == "default") {
+         EF_3_value = EF_3["cattle_default"];
+      } else if (climate == "dry") {
+         EF_3_value = EF_3["cattle_dry"];
+      } else {
+         EF_3_value = EF_3["cattle_wet"];
+      }
+   }
+   else {
+      EF_3_value = EF_3["other"];
+   }
+   const auto AWMS = _landUnitData->getVariable("AWMS")->value().extract<const std::vector<DynamicObject>>();
+   const auto Animal_weights = _landUnitData->getVariable("Animal_weights")->value().extract<const std::vector<DynamicObject>>();
+   const auto ex_rate = _landUnitData->getVariable("N_Excretion_rate")->value().extract<const std::vector<DynamicObject>>();
+
+   const auto region = _landUnitData->getVariable("region")->value().convert<std::string>();
+   std::string region_1, region_2;
+
+   if (region == "North America") {
+      region_1 = "North_America";
+      region_2 = region_1;
+   }
+   else if (region == "Western_Europe") {
+      region_1 = "Western_Europe";
+      region_2 = region_1;   
+   }
+   else if (region == "Eastern Europe") {
+      region_1 = "Eastern_Europe";
+      region_2 = region_1;
+   }
+   else if (region == "Russia") {
+      region_1 = "Eastern Europe";
+      region_2 = "Russia";     
+   }
+   else if (region == "Oceania") {
+      region_1 = "Oceania";
+      region_2 = region_1;
+   }
+   else if (region == "Latin America") {
+      if (prp.productivity_class == "high")
+         region_1 = "Latin_America_High";
+      else if(prp.productivity_class == "low")
+         region_1 = "Latin_America_Low";
+      else region_1 = "Latin_America_Mean";
+      region_2 = "Latin_America";
+   }
+   else if (region == "Africa") {
+      if (prp.productivity_class == "high")
+         region_1 = "Africa_High";
+      else if(prp.productivity_class == "low")
+         region_1 = "Africa_Low";
+      else region_1 = "Africa_Mean";
+      region_2 = "Africa";
+   }
+   else if (region == "Middle East") {
+      if (prp.productivity_class == "high")
+         region_1 = "Middle_East_High";
+      else if(prp.productivity_class == "low")
+         region_1 = "Middle_East_Low";
+      else region_1 = "Middle_East_Mean";
+      region_2 = "Middle_East";
+   }
+   else if (region == "Asia") {
+      if (prp.productivity_class == "high")
+         region_1 = "Asia_High";
+      else if(prp.productivity_class == "low")
+         region_1 = "Asia_Low";
+      else region_1 = "Asia_Mean";
+      region_2 = "Asia";
+   }
+   else if (region == "India") {
+      if (prp.productivity_class == "high")
+         region_1 = "India_High";
+      else if(prp.productivity_class == "low")
+         region_1 = "India_Low";
+      else region_1 = "India_Mean";
+      region_2 = "India";
+   }
+
+   int temp = -1;
+   for (auto i = 0; i < ex_rate.size(); i++){
+      if (ex_rate[i]["Animal"].convert<std::string>() == prp.animal_type) {
+         temp = i;
+         break;
+      }
+   }
+   if (temp == -1) {
+      std::string str = "Animal type: " + prp.animal_type + " not present in FLINTagri.db";
+      BOOST_THROW_EXCEPTION(flint::LocalDomainError()
+                            << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
+                            << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+   }
+
+   double N_rate = ex_rate[temp][region_1].convert<double>();
+
+   temp = -1;
+   for (auto i = 0; i < ex_rate.size(); i++){
+      if (Animal_weights[i]["Animal"].convert<std::string>() == prp.animal_type) {
+         temp = i;
+         break;
+      }
+   }
+   if (temp == -1) {
+      std::string str = "Animal type: " + prp.animal_type + " not present in FLINTagri.db";
+      BOOST_THROW_EXCEPTION(flint::LocalDomainError()
+                            << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
+                            << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+   }
+
+   double weight = Animal_weights[temp][region_1];
+   double N_ex = N_rate * weight / 1000;
+
+   temp = -1;
+
+   std::string animal = prp.animal_type;
+
+   if (prp.animal_type == "Horses" || prp.animal_type == "Mules" || prp.animal_type == "Camels" || prp.animal_type == "Asses") {
+      animal = "Goat";
+   }
+   else if (prp.animal_type == "Swine Finishing" || prp.animal_type == "Swine Breeding") {
+      if (prp.productivity_class == "high") 
+         animal = prp.animal_type + " High";
+      else if(prp.productivity_class == "low")
+         animal = prp.animal_type + " Low";
+   }
+   else if (prp.animal_type == "Buffalo") {
+      animal = prp.animal_type + " Other";
+      if (prp.use == "Dairy")
+         animal = prp.animal_type + " Dairy"; 
+   }
+   else if (prp.animal_type == "Sheep") {
+      if (prp.use == "Dairy")
+         animal = prp.animal_type + " Dairy";
+      else if (prp.use == "Meat")
+         animal = prp.animal_type + " Meat";
+   }
+   for (auto i = 0; i < ex_rate.size(); i++){
+      if (AWMS[i]["Animal"].convert<std::string>() == animal) {
+         temp = i;
+         break;
+      }
+   }
+
+   if (temp == -1) {
+      std::string str = "Animal type: " + animal + " not present in FLINTagri.db";
+      BOOST_THROW_EXCEPTION(flint::LocalDomainError()
+                            << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
+                            << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+   }
+
+   double MS = AWMS[temp][region_2].convert<double>();
+   double Fprp = prp.no_livestock * N_ex * MS;
+
+   auto operation = _landUnitData->createStockOperation();
+   operation->addTransfer(soil_, atmosphere_, Fprp * EF_3_value);
+   _landUnitData->submitOperation(operation);
+}
+
 void DisturbanceEventModule::disturbanceEventHandler(const flint::EventQueueItem* event) {
    const auto disturbance_event = std::static_pointer_cast<const DisturbanceEventBase>(event->_event);
    disturbance_event->simulate(*this);
