@@ -90,7 +90,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="http://moja.global"><img src="https://avatars1.githubusercontent.com/u/19564969?v=4" width="100px;" alt=""/><br /><sub><b>moja global</b></sub></a><br /><a href="#projectManagement-moja-global" title="Project Management">📆</a></td>
+
     <td align="center"><a href="https://github.com/sulays"><img src="https://avatars2.githubusercontent.com/u/22588201?v=4" width="100px;" alt=""/><br /><sub><b>Sulay Shah</b></sub></a><br /><a href="https://github.com/moja-global/GSoC.FLINT.Module.Agricultural_Soil_Model/commits?author=sulays" title="Code">💻</a></td>
+
+    <td align="center"><a href="https://github.com/leitchy"><img src="https://avatars0.githubusercontent.com/u/3417817?v=4" width="100px;" alt=""/><br /><sub><b>James Leitch</b></sub></a><br /><a href="https://github.com/moja-global/GSoC.FLINT.Module.Agricultural_Soil_Model/pulls?q=is%3Apr+reviewed-by%3Aleitchy" title="Reviewed Pull Requests">👀</a></td>
+
   </tr>
 </table>
 
