@@ -31,6 +31,8 @@ set(PROJECT_MODULE_HEADERS
 	include/moja/flint/example/${PACKAGE}/disturbanceevents.h
 	include/moja/flint/example/${PACKAGE}/fertevents.h
 	include/moja/flint/example/${PACKAGE}/buildlandunitmodule.h
+	include/moja/flint/example/${PACKAGE}/timeseriestransform.h
+	include/moja/flint/example/${PACKAGE}/landusemodule.h
 )
  
 set(PROJECT_MODULE_SOURCES
@@ -39,6 +41,8 @@ set(PROJECT_MODULE_SOURCES
 	src/disturbanceeventmodule.cpp
 	src/fertevents.cpp
 	src/buildlandunitmodule.cpp
+	src/timeseriestransform.cpp
+	src/landusemodule.cpp
 )
  
 set(PROJECT_TRANSFORM_HEADERS
