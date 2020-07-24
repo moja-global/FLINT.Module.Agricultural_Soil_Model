@@ -98,9 +98,6 @@
       }
     },
     {
-      "climate": "dry"
-    },
-    {
       "region": "Latin America"
     },
     {
@@ -179,6 +176,16 @@
           "type": "SQLQueryTransform",
           "provider": "SQLite",
           "queryFile": "config/sql/SOC_REF.sql"
+        }
+      }
+    },
+    {
+      "Wet_Dry_Climate": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/Wet_Dry_Climate.sql"
         }
       }
     },

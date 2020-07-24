@@ -14,7 +14,7 @@ namespace agri {
 
 class AGRI_API LandUseModule : public flint::ModuleBase
 {
-    std::string prevLandType, soilType, climateZone;
+    std::string prevLandType, soilType, climateZone, climate;
     double prevSOC = -1, SOC_REF;
 
 public:
@@ -31,6 +31,7 @@ public:
 private:
 	void InitializeForASimulation();
 	void SubmitMoves();
+	void ClassifyClimate();
 
 	const flint::IPool* _soil;
     const flint::IPool* _atmosphere;
@@ -40,7 +41,6 @@ private:
 	const flint::IVariable* _landUse;
 	const flint::IVariable* _management;
 	const flint::IVariable* _input;
-    const flint::IVariable* _climate;
     const flint::IVariable* _climateZone;
     const flint::IVariable* _soilType;
     const flint::IVariable* _stockRef;
