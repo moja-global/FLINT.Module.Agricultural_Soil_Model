@@ -63,10 +63,21 @@ void DisturbanceEventModule::onPreTimingSequence() {
 void DisturbanceEventModule::onTimingInit() {
    atmosphere_ = _landUnitData->getPool("atmosphere");
    soil_ = _landUnitData->getPool("soil");
-   try {
-      climate = _landUnitData->getVariable("climate")->value().convert<std::string>();
-   } catch (const std::exception&) {
-      climate = "default";
+   std::string climateZone = _landUnitData->getVariable("ipcc_climate_zone")->value().convert<std::string>();
+   const auto table = _landUnitData->getVariable("Wet_Dry_Climate")->value().extract<std::vector<DynamicObject>>();
+   int temp = -1;
+   for (auto i = 0; i < table.size(); i++) {
+      if (table[i]["Climate Zone"] == climateZone) {
+         temp = i;
+         climate = table[i]["Wet/Dry"] ? "wet" : "dry";
+         break;
+      }
+   }
+   if (temp == -1) {
+      std::string str = "Climate Zone: " + climateZone + " is not an IPCC Climate Zone";
+      BOOST_THROW_EXCEPTION(flint::LocalDomainError()
+                            << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
+                            << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
    }
 }
 

@@ -2,7 +2,7 @@
   "LocalDomain": {
     "type": "point",
     "start_date": "2000/01/01",
-    "end_date": "2004/12/31",
+    "end_date": "2000/12/31",
     "sequencer_library": "internal.flint",
     "sequencer": "CalendarAndEventFlintDataSequencer",
     "simulateLandUnit": "simulateLandUnit",
@@ -48,7 +48,54 @@
       }
     },
     {
-      "climate": "dry"
+      "ipcc_climate_zone": "Tropical Dry"
+    },
+    {
+      "soil_type": "HAC"
+    },
+    {
+      "landtype": {
+        "transform": {
+          "allow_nulls": true,
+          "library": "moja.flint.example.agri",
+          "type": "TimeSeriesTransform",
+          "data_property": "data_orig",
+          "data_orig": [ "F", "C", "C", "C", "C", "C", "G", "G", "G", "G", "G", "C" ]
+        }
+      }
+    },
+    {
+      "landuse": {
+        "transform": {
+          "allow_nulls": true,
+          "library": "moja.flint.example.agri",
+          "type": "TimeSeriesTransform",
+          "data_property": "data_orig",
+          "data_orig": [ "", "Long term cultivated", "Long term cultivated", "Long term cultivated", "Perennial crop", "Perennial crop", "", "", "", "", "", "Perennial crop" ]
+        }
+      }
+    },
+    {
+      "management": {
+        "transform": {
+          "allow_nulls": true,
+          "library": "moja.flint.example.agri",
+          "type": "TimeSeriesTransform",
+          "data_property": "data_orig",
+          "data_orig": [ "", "Full", "Reduced", "Reduced", "Reduced", "Reduced", "High intensity grazing", "High intensity grazing", "High intensity grazing", "High intensity grazing", "High intensity grazing", "No till" ]
+        }
+      }
+    },
+    {
+      "input": {
+        "transform": {
+          "allow_nulls": true,
+          "library": "moja.flint.example.agri",
+          "type": "TimeSeriesTransform",
+          "data_property": "data_orig",
+          "data_orig": [ "", "Medium", "Medium", "Medium", "Medium", "High with manure", "High", "High", "High", "High", "High", "High without manure" ]
+        }
+      }
     },
     {
       "region": "Latin America"
@@ -113,6 +160,36 @@
       }
     },
     {
+      "Soil_Stock_Change": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/Soil_Stock_Change.sql"
+        }
+      }
+    },
+    {
+      "SOC_REF": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/SOC_REF.sql"
+        }
+      }
+    },
+    {
+      "Wet_Dry_Climate": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/Wet_Dry_Climate.sql"
+        }
+      }
+    },
+    {
       "eventqueue": {
         "flintdata": {
           "library": "internal.flint",
@@ -121,7 +198,7 @@
             "events": [
               {
                 "date": {
-                  "$date": "2000/02/01"
+                  "$date": "2000/01/01"
                 },
                 "id": 1,
                 "type": "agri.NFertEvent",
@@ -131,7 +208,7 @@
               },
               {
                 "date": {
-                  "$date": "2001/05/01"
+                  "$date": "2000/05/01"
                 },
                 "id": 2,
                 "type": "agri.NFertEvent",
@@ -141,7 +218,7 @@
               },
               {
                 "date": {
-                  "$date": "2002/01/01"
+                  "$date": "2000/07/01"
                 },
                 "id": 3,
                 "type": "agri.HarvestEvent",
@@ -154,7 +231,7 @@
               },
               {
                 "date": {
-                  "$date": "2003/01/01"
+                  "$date": "2000/08/01"
                 },
                 "id": 3,
                 "type": "agri.PRPEvent",
@@ -180,6 +257,11 @@
       "order": 2
     },
     "DisturbanceEventModule": {
+      "enabled": true,
+      "library": "moja.flint.example.agri",
+      "order": 3
+    },
+    "LandUseModule": {
       "enabled": true,
       "library": "moja.flint.example.agri",
       "order": 4
