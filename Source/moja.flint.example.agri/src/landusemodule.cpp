@@ -58,6 +58,7 @@ void LandUseModule::SubmitMoves() {
     const auto landUse = _landUse->value().extract<std::string>();
     const auto management = _management->value().extract<std::string>();
     const auto input = _input->value().extract<std::string>();
+
     std::string str;
     auto EF_1 = _landUnitData->getVariable("EF_1")->value().extract<DynamicObject>();
     double EF_1_value; 
@@ -104,20 +105,8 @@ void LandUseModule::SubmitMoves() {
                 F_I = changeFactor[i]["Value"];
             }
         }
-        if (F_LU == -1) {
-            std::string str = "Landuse type: " + landUse + " not present in Soil_Stock_Change FLINTagri.db";
-            BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                                << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                                << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
-        }
-        if (F_MG == -1) {
-            std::string str = "Management type: " + landUse + " not present in Soil_Stock_Change FLINTagri.db";
-            BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                                << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                                << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
-        }
-        if (F_I == -1) {
-            std::string str = "Input type: " + landUse + " not present in Soil_Stock_Change FLINTagri.db";
+        if (F_LU == -1 || F_MG == -1 || F_I == -1) {
+            std::string str = "The entry: " + landType + " " + landUse + " " + management + " " + input + "is not present in Soil_Stock_Change FLINTagri.db";
             BOOST_THROW_EXCEPTION(flint::LocalDomainError()
                                 << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
                                 << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));

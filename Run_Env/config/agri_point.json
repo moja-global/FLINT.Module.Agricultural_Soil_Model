@@ -2,7 +2,7 @@
   "LocalDomain": {
     "type": "point",
     "start_date": "2000/01/01",
-    "end_date": "2000/12/31",
+    "end_date": "2005/12/31",
     "sequencer_library": "internal.flint",
     "sequencer": "CalendarAndEventFlintDataSequencer",
     "simulateLandUnit": "simulateLandUnit",
@@ -59,8 +59,8 @@
           "allow_nulls": true,
           "library": "moja.flint.example.agri",
           "type": "TimeSeriesTransform",
-          "data_property": "data_orig",
-          "data_orig": [ "F", "C", "C", "C", "C", "C", "G", "G", "G", "G", "G", "C" ]
+          "data_property": "data_yearly",
+          "data_yearly": [ "F", "C", "C", "G", "G", "G"]
         }
       }
     },
@@ -70,8 +70,8 @@
           "allow_nulls": true,
           "library": "moja.flint.example.agri",
           "type": "TimeSeriesTransform",
-          "data_property": "data_orig",
-          "data_orig": [ "", "Long term cultivated", "Long term cultivated", "Long term cultivated", "Perennial crop", "Perennial crop", "", "", "", "", "", "Perennial crop" ]
+          "data_property": "data_yearly",
+          "data_yearly": [ "", "Long term cultivated", "Perennial crop", "", "", ""]
         }
       }
     },
@@ -81,8 +81,8 @@
           "allow_nulls": true,
           "library": "moja.flint.example.agri",
           "type": "TimeSeriesTransform",
-          "data_property": "data_orig",
-          "data_orig": [ "", "Full", "Reduced", "Reduced", "Reduced", "Reduced", "High intensity grazing", "High intensity grazing", "High intensity grazing", "High intensity grazing", "High intensity grazing", "No till" ]
+          "data_property": "data_yearly",
+          "data_yearly": [ "", "Reduced", "Full", "High intensity grazing", "High intensity grazing", "High intensity grazing"]
         }
       }
     },
@@ -92,8 +92,8 @@
           "allow_nulls": true,
           "library": "moja.flint.example.agri",
           "type": "TimeSeriesTransform",
-          "data_property": "data_orig",
-          "data_orig": [ "", "Medium", "Medium", "Medium", "Medium", "High with manure", "High", "High", "High", "High", "High", "High without manure" ]
+          "data_property": "data_yearly",
+          "data_yearly": [ "", "Medium", "Medium", "High", "High", "High"]
         }
       }
     },
@@ -208,7 +208,7 @@
               },
               {
                 "date": {
-                  "$date": "2000/05/01"
+                  "$date": "2001/05/01"
                 },
                 "id": 2,
                 "type": "agri.NFertEvent",
@@ -218,7 +218,7 @@
               },
               {
                 "date": {
-                  "$date": "2000/07/01"
+                  "$date": "2002/07/01"
                 },
                 "id": 3,
                 "type": "agri.HarvestEvent",
@@ -231,7 +231,7 @@
               },
               {
                 "date": {
-                  "$date": "2000/08/01"
+                  "$date": "2003/08/01"
                 },
                 "id": 3,
                 "type": "agri.PRPEvent",

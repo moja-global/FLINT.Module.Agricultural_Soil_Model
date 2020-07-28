@@ -37,7 +37,13 @@ void TimeSeriesTransform::configure(DynamicObject config, const flint::ILandUnit
       auto data = timeseries.extract<std::vector<DynamicVar>>();
       if (!data.empty()) {
          for (auto value : data) {
-            _values.push_back(value);
+            if (_dataPropertyName == "data_yearly") {
+               for (auto i = 0; i < 12; i++) {
+                  _values.push_back(value);
+               }
+            } else {
+               _values.push_back(value);
+            }
          }
       }
    }
