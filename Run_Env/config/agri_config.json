@@ -55,7 +55,7 @@
       }
     },
     {
-      "climate" : "dry"
+      "ipcc_climate_zone" : "default"
     },
     {
       "spatialLocationInfo": {
@@ -101,6 +101,16 @@
             "library": "internal.flint",
             "provider": "FlintTiled",
             "type": "LocationIdxFromFlintDataTransform"
+        }
+      }
+    },
+    {
+      "Wet_Dry_Climate": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/Wet_Dry_Climate.sql"
         }
       }
     }
