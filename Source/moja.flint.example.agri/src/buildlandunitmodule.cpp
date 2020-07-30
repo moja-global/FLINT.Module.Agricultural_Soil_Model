@@ -28,17 +28,21 @@ void BuildLandUnitModule::configure(const DynamicObject& config) {}
 
 void BuildLandUnitModule::onLocalDomainInit() {
    landuse_ = _landUnitData->getVariable("landuse");
-   climate_ = _landUnitData->getVariable("climate");
+   climate_ = _landUnitData->getVariable("ipcc_climate_zone");
 }
 
 void BuildLandUnitModule::onPreTimingSequence() {
    zones_ = _landUnitData->getVariable("zones");
+   const auto table = _landUnitData->getVariable("Wet_Dry_Climate")->value().extract<std::vector<DynamicObject>>();
    if (int(zones_->value()) == 0) {
-      climate_->set_value("dry");
-   } else if (int(zones_->value() == 1)) {
-      climate_->set_value("wet");
-   } else {
       climate_->set_value("default");
+   } else {
+      for (auto i=0; i < table.size(); i++){
+         if (table[i]["Zone Id"] == int(zones_->value())) {
+            climate_->set_value(table[i]["Climate Zone"]);
+            break;
+         }
+      }
    }
    const auto timing = _landUnitData->timing();
    const auto startDate = timing->startDate();
