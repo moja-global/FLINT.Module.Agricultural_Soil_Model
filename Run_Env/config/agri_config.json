@@ -113,6 +113,16 @@
           "queryFile": "config/sql/Wet_Dry_Climate.sql"
         }
       }
+    },
+    {
+      "Wet_Dry_Zone": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/Wet_Dry_Zone.sql"
+        }
+      }
     }
   ],
   "Modules": {

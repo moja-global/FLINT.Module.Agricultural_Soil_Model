@@ -33,17 +33,17 @@ void BuildLandUnitModule::onLocalDomainInit() {
 
 void BuildLandUnitModule::onPreTimingSequence() {
    zones_ = _landUnitData->getVariable("zones");
-   const auto table = _landUnitData->getVariable("Wet_Dry_Climate")->value().extract<std::vector<DynamicObject>>();
-   if (int(zones_->value()) == 0) {
-      climate_->set_value("default");
-   } else {
-      for (auto i=0; i < table.size(); i++){
-         if (table[i]["Zone Id"] == int(zones_->value())) {
-            climate_->set_value(table[i]["Climate Zone"]);
-            break;
-         }
-      }
+   DynamicObject table;
+   try {
+      table = _landUnitData->getVariable("Wet_Dry_Zone")->value().extract<DynamicObject>();
+   } catch (const std::exception& e) {
+      std::string str = "Zone Id: " + zones_->value() + " is not an IPCC Climate Zone";
+      BOOST_THROW_EXCEPTION(flint::LocalDomainError()
+                            << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
+                            << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
    }
+   climate_->set_value(table["Climate_Zone"]);
+  
    const auto timing = _landUnitData->timing();
    const auto startDate = timing->startDate();
    const auto endDate = timing->endDate();

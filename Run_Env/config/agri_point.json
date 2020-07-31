@@ -190,6 +190,12 @@
       }
     },
     {
+      "animal_type" : "default"
+    },
+    {
+      "crop_type": "default"
+    },
+    {
       "eventqueue": {
         "flintdata": {
           "library": "internal.flint",
