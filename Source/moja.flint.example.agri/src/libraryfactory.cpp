@@ -7,6 +7,7 @@
 #include "moja/flint/example/agri/buildlandunitmodule.h"
 #include "moja/flint/example/agri/landusemodule.h"
 #include "moja/flint/example/agri/timeseriestransform.h"
+#include "moja/flint/example/agri/spatialtransform.h"
 // Transforms
 
 // Flint Data
@@ -41,6 +42,7 @@ extern "C" {
 	MOJA_LIB_API int getTransformRegistrations(TransformRegistration* outTransformRegistrations) {
 		int index = 0;
 		outTransformRegistrations[index++] = TransformRegistration{ "TimeSeriesTransform",	[]() -> flint::ITransform* { return new TimeSeriesTransform(); } };
+		outTransformRegistrations[index++] = TransformRegistration{ "SpatialTransform",	[]() -> flint::ITransform* { return new SpatialTransform(); } };
 		return index;
 	}
 

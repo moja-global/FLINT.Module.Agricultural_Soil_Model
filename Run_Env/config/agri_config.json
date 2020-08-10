@@ -15,7 +15,7 @@
       "blocks": [
         {
           "tile_index": 26758,
-          "block_index": 45
+          "block_index": 46
         }
       ]
     },
@@ -31,7 +31,8 @@
   "Pools": [
     "initial_values",
     "atmosphere",
-    "soil"
+    "soil",
+    "debris"
   ],
   "Variables": [
     {
@@ -55,7 +56,16 @@
       }
     },
     {
-      "ipcc_climate_zone" : "default"
+      "ipcc_climate_zone" : "Tropical Dry"
+    },
+    {
+      "crop_type" : "default"
+    },
+    {
+      "yield" : 0
+    },
+    {
+      "harvested": 0
     },
     {
       "spatialLocationInfo": {
@@ -85,12 +95,31 @@
       }
     },
     {
+      "Cf_table": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/Cf_table.sql"
+        }
+      }
+    },
+    {
       "zones": {
         "transform": {
           "data_id": "zones",
           "library": "internal.flint",
           "provider": "FlintTiled",
           "type": "LocationIdxFromFlintDataTransform"
+        }
+      }
+    },
+    {
+      "spatialevents": {
+        "transform": {
+          "library": "moja.flint.example.agri",
+          "type": "SpatialTransform",
+          "data_property": "harvest"
         }
       }
     },
@@ -135,7 +164,6 @@
       "order": 2
     },
     "BuildLandUnitModule": {
-      "enabled": true,        
       "library": "moja.flint.example.agri",
       "order": 3
     },
@@ -177,6 +205,16 @@
             "enabled": true,
             "data_name": "atmosphere",
             "pool_name": "atmosphere",
+            "variable_data_type": "float",
+            "on_notification": "OutputStep",
+            "output_annual_only": false,
+            "nodata_value": -9999,
+            "apply_area_adjustment": false
+          },
+          {
+            "enabled": true,
+            "data_name": "debris",
+            "pool_name": "debris",
             "variable_data_type": "float",
             "on_notification": "OutputStep",
             "output_annual_only": false,
