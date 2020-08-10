@@ -15,6 +15,7 @@ class NFertEvent;
 class EmissionEvent;
 class HarvestEvent;
 class PRPEvent;
+class PlantEvent;
 
 class AGRI_API DisturbanceEventHandler {
   public:
@@ -24,6 +25,7 @@ class AGRI_API DisturbanceEventHandler {
    virtual void simulate(const EmissionEvent& fert) {}
    virtual void simulate(const HarvestEvent& harvest) {}
    virtual void simulate(const PRPEvent& prp) {}
+   virtual void simulate(const PlantEvent& prp) {}
 };
 
 class AGRI_API DisturbanceEventBase : public flint::EventBase {

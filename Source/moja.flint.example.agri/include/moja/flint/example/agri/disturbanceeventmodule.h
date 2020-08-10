@@ -13,6 +13,7 @@ class NFertEvent;
 class EmissionEvent;
 class HarvestEvent;
 class PRPEvent;
+class PlantEvent;
 
 class AGRI_API DisturbanceEventModule : public flint::ModuleBase, DisturbanceEventHandler {
   public:
@@ -24,6 +25,7 @@ class AGRI_API DisturbanceEventModule : public flint::ModuleBase, DisturbanceEve
 
    void onPreTimingSequence() override; 
    void onTimingInit() override;
+   void onTimingStep() override;
 
    void disturbanceEventHandler(const flint::EventQueueItem* event);  // special handler for events
 
@@ -32,10 +34,12 @@ class AGRI_API DisturbanceEventModule : public flint::ModuleBase, DisturbanceEve
    void simulate(const EmissionEvent& fert) override;
    void simulate(const HarvestEvent& harvest) override;
    void simulate(const PRPEvent& prp) override;
+   void simulate(const PlantEvent &plant) override;
 
    const flint::IPool* atmosphere_;
    const flint::IPool* soil_;
    const flint::IPool* initial_values;
+   const flint::IPool* debris_;
    std::string climate;
 };
 

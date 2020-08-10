@@ -17,6 +17,7 @@ std::shared_ptr<flint::IFlintData> createFertEventsFactory(const std::string& ev
    if (eventTypeStr == "agri.EmissionEvent") return std::make_shared<EmissionEvent>(id, name);
    if (eventTypeStr == "agri.HarvestEvent") return std::make_shared<HarvestEvent>(id, name);
    if (eventTypeStr == "agri.PRPEvent") return std::make_shared<PRPEvent>(id, name);
+   if (eventTypeStr == "agri.PlantEvent") return std::make_shared<PlantEvent>(id, name);
    return nullptr;
 }
 
@@ -56,20 +57,16 @@ void EmissionEvent::simulate(DisturbanceEventHandler& event_handler) const { eve
 void HarvestEvent::configure(DynamicObject config, const flint::ILandUnitController& landUnitController,
                                  datarepository::DataRepository& dataRepository) {
    DisturbanceEventBase::configure(config, landUnitController, dataRepository);
-   yield_fresh = config["yield_fresh"];
    frac_renew = config["frac_renew"];
    frac_remove = config["frac_remove"];
    frac_burnt = config["frac_burnt"];
-   above_ground_residue = config["above_ground_residue"];
 }
 
 DynamicObject HarvestEvent::exportObject() const {
    auto object = DisturbanceEventBase::exportObject();
-   object["yield_fresh"] = yield_fresh;
    object["frac_renew"] = frac_renew;
    object["frac_remove"] = frac_remove;
    object["frac_burnt"] = frac_burnt;
-   object["above_ground_residue"] = above_ground_residue;
    return object;
 }
 
@@ -95,6 +92,18 @@ DynamicObject PRPEvent::exportObject() const {
 }
 
 void PRPEvent::simulate(DisturbanceEventHandler& event_handler) const { event_handler.simulate(*this); }
+
+void PlantEvent::configure(DynamicObject config, const flint::ILandUnitController& landUnitController,
+                                 datarepository::DataRepository& dataRepository) {
+   DisturbanceEventBase::configure(config, landUnitController, dataRepository);
+}
+
+DynamicObject PlantEvent::exportObject() const {
+   auto object = DisturbanceEventBase::exportObject();
+   return object;
+}
+
+void PlantEvent::simulate(DisturbanceEventHandler& event_handler) const { event_handler.simulate(*this); }
 }  // namespace chapman_richards
 }  // namespace modules
 }  // namespace moja
