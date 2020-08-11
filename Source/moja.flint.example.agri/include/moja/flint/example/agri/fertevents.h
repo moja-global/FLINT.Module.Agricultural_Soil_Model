@@ -68,6 +68,18 @@ class PRPEvent final : public DisturbanceEventBase {
    std::string use;
 };
 
+class PlantEvent final : public DisturbanceEventBase {
+  public:
+   PlantEvent(int id, const std::string& name) : DisturbanceEventBase(id, "agri.PlantEvent", name) {}
+   virtual ~PlantEvent() = default;
+
+   void configure(DynamicObject config, const flint::ILandUnitController& landUnitController,
+                  datarepository::DataRepository& dataRepository) override;
+   DynamicObject exportObject() const override;
+   void simulate(DisturbanceEventHandler& event_handler) const override;
+   std::string crop_type;
+};
+
 }  // namespace chapman_richards
 }  // namespace modules
 }  // namespace moja

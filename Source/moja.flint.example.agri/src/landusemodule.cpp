@@ -3,6 +3,7 @@
 #include "moja/flint/flintexceptions.h"
 #include "moja/flint/ivariable.h"
 #include "moja/flint/ioperation.h"
+#include "moja/datarepository/datarepository.h"
 
 #include "moja/mathex.h"
 #include "moja/notificationcenter.h"
@@ -10,6 +11,8 @@
 #include "moja/logging.h"
 
 #include <boost/format.hpp>
+
+using moja::datarepository::IProviderRelationalInterface;
 
 namespace moja {
 namespace flint {
@@ -27,28 +30,22 @@ void LandUseModule::subscribe(NotificationCenter& notificationCenter) {
 void LandUseModule::InitializeForASimulation() {
     soilType = _soilType->value().extract<std::string>();
     climateZone = _climateZone->value().extract<std::string>();
-    const auto stockRef = _stockRef->value().extract<const std::vector<DynamicObject>>();
+    DynamicObject stockRef;
     try {
-        int temp = -1;
-        for (auto i = 0; i < stockRef.size(); i++){
-            if (stockRef[i]["Climate Zone"] == climateZone) {
-                temp = i;
-                break;
-            }
-        }
-        if (temp == -1) {
-            std::string str = "Climate zone: " + climateZone + " not present in SOC_REF FLINTagri.db";
-            BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                                << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                                << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
-        }
-        SOC_REF = stockRef[temp][soilType].convert<double>();
+        stockRef = _stockRef->value().extract<const DynamicObject>();
+    } catch (const std::exception& e) {
+       std::string str = "Climate zone: " + climateZone + " not present in SOC_REF FLINTagri.db";
+       BOOST_THROW_EXCEPTION(flint::LocalDomainError()
+                             << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
+                             << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
     }
-    catch(const std::exception&) {
-        std::string str = "Soil type: " + soilType + " not present in SOC_REF FLINTagri.db";
-        BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                            << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                            << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+    try {
+       SOC_REF = stockRef[soilType];
+    } catch (const std::exception& e) {
+       std::string str = "Soil type: " + soilType + " not present in SOC_REF FLINTagri.db";
+       BOOST_THROW_EXCEPTION(flint::LocalDomainError()
+                             << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
+                             << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
     }
 }
 
@@ -153,21 +150,16 @@ void LandUseModule::onTimingStep() {
 }
 
 void LandUseModule::ClassifyClimate() {
-   const auto table = _landUnitData->getVariable("Wet_Dry_Climate")->value().extract<std::vector<DynamicObject>>();
-   int temp = -1;
-   for (auto i = 0; i < table.size(); i++) {
-      if (table[i]["Climate Zone"] == climateZone) {
-         temp = i;
-         climate = table[i]["Wet/Dry"] ? "wet" : "dry";
-         break;
-      }
-   }
-   if (temp == -1) {
+   DynamicObject table;
+   try {
+      table = _landUnitData->getVariable("Wet_Dry_Climate")->value().extract<DynamicObject>();
+   } catch (const std::exception& e) {
       std::string str = "Climate Zone: " + climateZone + " is not an IPCC Climate Zone";
       BOOST_THROW_EXCEPTION(flint::LocalDomainError()
                             << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
                             << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
    }
+   climate = table["Wet/Dry"] ? "wet" : "dry";
 }
 
 }

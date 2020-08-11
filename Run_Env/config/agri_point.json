@@ -16,7 +16,8 @@
   "Pools": [
     "initial_values",
     "atmosphere",
-    "soil"
+    "soil",
+    "debris"
   ],
   "Variables": [
     {
@@ -190,6 +191,18 @@
       }
     },
     {
+      "animal_type" : "default"
+    },
+    {
+      "crop_type": "default"
+    },
+    {
+      "yield": 0
+    },
+    {
+      "harvested": 0
+    },
+    {
       "eventqueue": {
         "flintdata": {
           "library": "internal.flint",
@@ -218,16 +231,22 @@
               },
               {
                 "date": {
+                  "$date": "2002/03/01"
+                },
+                "id": 3,
+                "type": "agri.PlantEvent",
+                "name": "Winter Wheat"
+              },
+              {
+                "date": {
                   "$date": "2002/07/01"
                 },
                 "id": 3,
                 "type": "agri.HarvestEvent",
                 "name": "Winter Wheat",
-                "yield_fresh": 3,
                 "frac_burnt": 0,
                 "frac_renew": 0,
-                "frac_remove": 0,
-                "above_ground_residue": 2
+                "frac_remove": 0
               },
               {
                 "date": {

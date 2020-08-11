@@ -6,6 +6,7 @@
 #include "moja/flint/modulebase.h"
 #include <moja/flint/itiming.h>
 #include "moja/flint/example/agri/_modules.agri_exports.h"
+#include "moja/datarepository/iproviderrelationalinterface.h"
 
 namespace moja {
 namespace flint {

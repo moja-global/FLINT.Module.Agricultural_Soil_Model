@@ -19,7 +19,7 @@
                 "layer_type": "GridLayer",
                 "layer_data": "Int16",
                 "layer_prefix": "",
-                "layer_path": "data/zones.tif",
+                "layer_path": "data/zones_orig.tif",
                 "metadata_required": false,
                 "nodata": 255
             },

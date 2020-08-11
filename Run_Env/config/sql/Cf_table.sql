@@ -1,3 +1,4 @@
 SELECT 
     * 
-FROM Combustion_factor 
+FROM Combustion_factor
+WHERE Crops = {var:crop_type} 
