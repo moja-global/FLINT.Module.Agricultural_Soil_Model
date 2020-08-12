@@ -38,10 +38,7 @@ private:
     const flint::IPool* _atmosphere;
     const flint::IPool* _initialValues;
 
-	const flint::IVariable* _landType;
-	const flint::IVariable* _landUse;
-	const flint::IVariable* _management;
-	const flint::IVariable* _input;
+    const flint::IVariable* _change;
     const flint::IVariable* _climateZone;
     const flint::IVariable* _soilType;
     const flint::IVariable* _stockRef;

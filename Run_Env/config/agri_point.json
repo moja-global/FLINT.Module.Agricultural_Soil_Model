@@ -55,48 +55,27 @@
       "soil_type": "HAC"
     },
     {
-      "landtype": {
+      "landtype": [ "F", "C", "C", "G", "G", "G"]
+    },
+    {
+      "landuse": [ "", "Long term cultivated", "Perennial crop", "", "", ""]
+    },
+    {
+      "change": {
         "transform": {
           "allow_nulls": true,
           "library": "moja.flint.example.agri",
-          "type": "TimeSeriesTransform",
+          "type": "CompositeTimeSeriesTransform",
           "data_property": "data_yearly",
-          "data_yearly": [ "F", "C", "C", "G", "G", "G"]
+          "vars": [ "landtype", "landuse", "management", "input"]
         }
       }
     },
     {
-      "landuse": {
-        "transform": {
-          "allow_nulls": true,
-          "library": "moja.flint.example.agri",
-          "type": "TimeSeriesTransform",
-          "data_property": "data_yearly",
-          "data_yearly": [ "", "Long term cultivated", "Perennial crop", "", "", ""]
-        }
-      }
+      "management": [ "", "Reduced", "Full", "High intensity grazing", "High intensity grazing", "High intensity grazing"]
     },
     {
-      "management": {
-        "transform": {
-          "allow_nulls": true,
-          "library": "moja.flint.example.agri",
-          "type": "TimeSeriesTransform",
-          "data_property": "data_yearly",
-          "data_yearly": [ "", "Reduced", "Full", "High intensity grazing", "High intensity grazing", "High intensity grazing"]
-        }
-      }
-    },
-    {
-      "input": {
-        "transform": {
-          "allow_nulls": true,
-          "library": "moja.flint.example.agri",
-          "type": "TimeSeriesTransform",
-          "data_property": "data_yearly",
-          "data_yearly": [ "", "Medium", "Medium", "High", "High", "High"]
-        }
-      }
+      "input": [ "", "Medium", "Medium", "High", "High", "High"]
     },
     {
       "region": "Latin America"

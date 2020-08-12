@@ -68,6 +68,32 @@
       "harvested": 0
     },
     {
+      "soil_type": "HAC"
+    },
+    {
+      "landtype": [""]
+    },
+    {
+      "landuse": [""]
+    },
+    {
+      "management": [""]
+    },
+    {
+      "input": [""]
+    },
+    {
+      "change": {
+        "transform": {
+          "allow_nulls": true,
+          "library": "moja.flint.example.agri",
+          "type": "CompositeTimeSeriesTransform",
+          "data_property": "data_yearly",
+          "vars": [ "landtype", "landuse", "management", "input"]
+        }
+      }
+    },
+    {
       "spatialLocationInfo": {
         "flintdata": {
           "library": "internal.flint",
@@ -124,6 +150,15 @@
       }
     },
     {
+      "landuseevents": {
+        "transform": {
+          "library": "moja.flint.example.agri",
+          "type": "SpatialTransform",
+          "data_property": "landuse"
+        }
+      }
+    },
+    {
       "landuse": {
         "transform": {
             "data_id": "land_use",
@@ -152,6 +187,26 @@
           "queryFile": "config/sql/Wet_Dry_Zone.sql"
         }
       }
+    },
+    {
+      "Soil_Stock_Change": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/Soil_Stock_Change.sql"
+        }
+      }
+    },
+    {
+      "SOC_REF": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/SOC_REF.sql"
+        }
+      }
     }
   ],
   "Modules": {
@@ -167,15 +222,19 @@
       "library": "moja.flint.example.agri",
       "order": 3
     },
+    "LandUseModule": {
+      "library": "moja.flint.example.agri",
+      "order": 4
+    },
     "DisturbanceEventModule": {
       "enabled": true,
       "library": "moja.flint.example.agri",
-      "order": 4
+      "order": 5
     },
     "OutputerStream": {
       "enabled": true,
       "library": "internal.flint",
-      "order": 5,
+      "order": 6,
       "settings": {
         "output_filename": "Example_Agri_Spatial_Stock.csv",
         "output_to_screen": false,
@@ -186,7 +245,7 @@
     "OutputerStreamFlux": {
       "enabled": true,
       "library": "internal.flint",
-      "order": 6,
+      "order": 7,
       "settings": {
         "output_filename": "Example_Agri_Spatial_Flux.csv",
         "output_to_screen": false,
@@ -196,7 +255,7 @@
     "WriteVariableGeotiff": {
       "enabled": true,
       "library": "moja.modules.gdal",
-      "order": 7,
+      "order": 8,
       "settings": {
         "output_path": "data/output/results/spatial_outputs/grids",
         "use_indexes_for_folder_name": true,
