@@ -50,11 +50,14 @@ void LandUseModule::InitializeForASimulation() {
 }
 
 void LandUseModule::SubmitMoves() {
+
     const auto changeFactor = _changeFactor->value().extract<const std::vector<DynamicObject>>();
-    const auto landType = _landType->value().extract<std::string>();
-    const auto landUse = _landUse->value().extract<std::string>();
-    const auto management = _management->value().extract<std::string>();
-    const auto input = _input->value().extract<std::string>();
+    const auto change = _change->value().extract<DynamicObject>();
+    
+    const auto landType = change["landtype"].extract<std::string>();
+    const auto landUse = change["landuse"].extract<std::string>();
+    const auto management = change["management"].extract<std::string>();
+    const auto input = change["input"].extract<std::string>();
 
     std::string str;
     auto EF_1 = _landUnitData->getVariable("EF_1")->value().extract<DynamicObject>();
@@ -130,10 +133,7 @@ void LandUseModule::onLocalDomainInit() {
 	_initialValues = _landUnitData->getPool("initial_values");
 
 	// Variables
-	_landType = _landUnitData->getVariable("landtype");
-	_landUse = _landUnitData->getVariable("landuse");
-	_management = _landUnitData->getVariable("management");
-	_input = _landUnitData->getVariable("input");
+    _change = _landUnitData->getVariable("change");
     _soilType = _landUnitData->getVariable("soil_type");
     _climateZone = _landUnitData->getVariable("ipcc_climate_zone");
     _stockRef = _landUnitData->getVariable("SOC_REF");

@@ -17,7 +17,7 @@ namespace flint {
 namespace example {
 namespace agri {
 
-class TimeSeriesTransform : public flint::ITransform {
+class CompositeTimeSeriesTransform : public flint::ITransform {
   public:
    enum Format { Wide, Long };
 
@@ -31,7 +31,8 @@ class TimeSeriesTransform : public flint::ITransform {
    const flint::ILandUnitController* _landUnitController;
    datarepository::DataRepository* _dataRepository;
 
-   std::vector<std::string> _values;
+   mutable std::vector<const IVariable*> _variables;
+   std::vector<std::string> _varNames;
    mutable DynamicVar _currentValue;
    mutable std::string _dataPropertyName;
 };
