@@ -1,5 +1,5 @@
-#ifndef MOJA_FLINT_EXAMPLE_ROTHC_ROTHCMODULE_H_
-#define MOJA_FLINT_EXAMPLE_ROTHC_ROTHCMODULE_H_
+#ifndef MOJA_FLINT_EXAMPLE_AGRI_LANDUSEMODULE_H_
+#define MOJA_FLINT_EXAMPLE_AGRI_LANDUSEMODULE_H_
 
 #include "moja/_core_exports.h"
 #include "moja/flint/imodule.h"
@@ -45,9 +45,9 @@ private:
     const flint::IVariable* _changeFactor;
 };
 
-}
-}
-}
-} 
+}  // namespace agri
+}  // namespace example
+}  // namespace flint
+}  // namespace moja
 
 #endif // MOJA_FLINT_EXAMPLE_AGRI_LANDUSEMODULE_H_

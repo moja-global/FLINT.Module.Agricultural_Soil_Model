@@ -80,7 +80,7 @@ class PlantEvent final : public DisturbanceEventBase {
    std::string crop_type;
 };
 
-}  // namespace chapman_richards
-}  // namespace modules
+}  // namespace agri
+}  // namespace example
+}  // namespace flint
 }  // namespace moja
-}

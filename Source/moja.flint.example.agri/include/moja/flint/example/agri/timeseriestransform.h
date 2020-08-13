@@ -1,5 +1,5 @@
-#ifndef MOJA_FLINT_EXAMPLE_BASE_COMPOSITETRANSFORM_H_
-#define MOJA_FLINT_EXAMPLE_BASE_COMPOSITETRANSFORM_H_
+#ifndef MOJA_FLINT_EXAMPLE_AGRI_COMPOSITETRANSFORM_H_
+#define MOJA_FLINT_EXAMPLE_AGRI_COMPOSITETRANSFORM_H_
 
 #include "moja/flint/example/agri/_modules.agri_exports.h"
 
@@ -37,9 +37,9 @@ class CompositeTimeSeriesTransform : public flint::ITransform {
    mutable std::string _dataPropertyName;
 };
 
-}  // namespace base
+}  // namespace agri
 }  // namespace example
 }  // namespace flint
 }  // namespace moja
 
-#endif // MOJA_FLINT_EXAMPLE_BASE_COMPOSITETRANSFORM_H_
+#endif // MOJA_FLINT_EXAMPLE_AGRI_COMPOSITETRANSFORM_H_
