@@ -91,6 +91,17 @@ const DynamicVar& SpatialTransform::value() const {
       change.insert<std::vector<DynamicVar>>("input", input);
 
       _cachedValue = change;
+   } else if (_dataPropertyName == "prp") {
+      DynamicObject animals;
+      animals.insert<DateTime>("date", DateTime(2003, 8, 1));
+      animals.insert<std::string>("type", "agri.PRPEvent");
+      animals.insert<std::string>("animal", "Buffalo");
+      animals.insert<int>("number", 3);
+      animals.insert<std::string>("productivity_class", "High");
+      animals.insert<std::string>("use", "Other");
+      
+      events.emplace_back(animals);
+      _cachedValue = events;
    }
 
    return _cachedValue;

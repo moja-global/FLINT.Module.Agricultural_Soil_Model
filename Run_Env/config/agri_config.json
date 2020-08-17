@@ -56,10 +56,24 @@
       }
     },
     {
+      "EF_3": {
+        "cattle_default": 0.004,
+        "cattle_wet": 0.006,
+        "cattle_dry": 0.002,
+        "other": 0.003
+      }
+    },
+    {
       "ipcc_climate_zone" : "Tropical Dry"
     },
     {
+      "region": "Latin America"
+    },
+    {
       "crop_type" : "default"
+    },
+    {
+      "animal_type" : "default"
     },
     {
       "yield" : 0
@@ -145,7 +159,7 @@
         "transform": {
           "library": "moja.flint.example.agri",
           "type": "SpatialTransform",
-          "data_property": "harvest"
+          "data_property": "prp"
         }
       }
     },
@@ -205,6 +219,36 @@
           "type": "SQLQueryTransform",
           "provider": "SQLite",
           "queryFile": "config/sql/SOC_REF.sql"
+        }
+      }
+    },
+    {
+      "Animal_weights": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/Animal_weights.sql"
+        }
+      }
+    },
+    {
+      "N_Excretion_rate": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/N_Excretion_rate.sql"
+        }
+      }
+    },
+    {
+      "AWMS": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/AWMS.sql"
         }
       }
     }

@@ -72,6 +72,15 @@ void BuildLandUnitModule::onPreTimingSequence() {
          org_ev->quantity = temp["quantity"];
          org_ev->runtime = temp["runtime"];
          event_queue->emplace_back(date, org_ev);
+      
+      } else if (temp["type"] == "agri.PRPEvent") {
+         auto prp = std::make_shared<PRPEvent>(eventId++, "PRP Event");
+         auto date = temp["date"].extract<const DateTime>();
+         prp->animal_type = temp["animal"].extract<std::string>();
+         prp->no_livestock = temp["number"];
+         prp->productivity_class = temp["productivity_class"].extract<std::string>();
+         prp->use = temp["use"].extract<std::string>();
+         event_queue->emplace_back(date, prp);
       }
    }
 
