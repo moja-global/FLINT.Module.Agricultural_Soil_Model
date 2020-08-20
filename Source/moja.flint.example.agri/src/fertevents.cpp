@@ -104,7 +104,7 @@ DynamicObject PlantEvent::exportObject() const {
 }
 
 void PlantEvent::simulate(DisturbanceEventHandler& event_handler) const { event_handler.simulate(*this); }
-}  // namespace chapman_richards
-}  // namespace modules
+}  // namespace agri
+}  // namespace example
+}  // namespace flint
 }  // namespace moja
-}

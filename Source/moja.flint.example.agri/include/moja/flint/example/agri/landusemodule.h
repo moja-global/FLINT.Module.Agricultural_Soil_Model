@@ -1,5 +1,5 @@
-#ifndef MOJA_FLINT_EXAMPLE_ROTHC_ROTHCMODULE_H_
-#define MOJA_FLINT_EXAMPLE_ROTHC_ROTHCMODULE_H_
+#ifndef MOJA_FLINT_EXAMPLE_AGRI_LANDUSEMODULE_H_
+#define MOJA_FLINT_EXAMPLE_AGRI_LANDUSEMODULE_H_
 
 #include "moja/_core_exports.h"
 #include "moja/flint/imodule.h"
@@ -38,19 +38,16 @@ private:
     const flint::IPool* _atmosphere;
     const flint::IPool* _initialValues;
 
-	const flint::IVariable* _landType;
-	const flint::IVariable* _landUse;
-	const flint::IVariable* _management;
-	const flint::IVariable* _input;
+    const flint::IVariable* _change;
     const flint::IVariable* _climateZone;
     const flint::IVariable* _soilType;
     const flint::IVariable* _stockRef;
     const flint::IVariable* _changeFactor;
 };
 
-}
-}
-}
-} 
+}  // namespace agri
+}  // namespace example
+}  // namespace flint
+}  // namespace moja
 
 #endif // MOJA_FLINT_EXAMPLE_AGRI_LANDUSEMODULE_H_

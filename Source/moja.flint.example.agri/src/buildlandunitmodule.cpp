@@ -26,50 +26,25 @@ void BuildLandUnitModule::subscribe(NotificationCenter& notificationCenter) {
 
 void BuildLandUnitModule::configure(const DynamicObject& config) {}
 
-void BuildLandUnitModule::onLocalDomainInit() {
-   
-}
+void BuildLandUnitModule::onLocalDomainInit() {}
 
 void BuildLandUnitModule::onPreTimingSequence() {
-   /*zones_ = _landUnitData->getVariable("zones");
-   DynamicObject table;
-   try {
-      table = _landUnitData->getVariable("Wet_Dry_Zone")->value().extract<DynamicObject>();
-   } catch (const std::exception& e) {
-      if (zones_->value() == 0) {
-         climate_->set_value("default");
-      } else {
-         std::string str = "Zone Id: " + zones_->value() + " is not an IPCC Climate Zone";
-         BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                               << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                               << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
-   
-      }
-   }
-   climate_->set_value(table["Climate_Zone"]);
-   
    const auto timing = _landUnitData->timing();
    const auto startDate = timing->startDate();
    const auto endDate = timing->endDate();
 
    auto temp = startDate;
-   */
    auto event_queue = std::static_pointer_cast<flint::EventQueue>(
        _landUnitData->getVariable("eventqueue")->value<std::shared_ptr<flint::IFlintData>>());
    event_queue->clear();
    int eventId = 0;
 
-   const auto timing = _landUnitData->timing();
-   const auto startDate = timing->startDate();
-   const auto endDate = timing->endDate();
+   auto prev_date = startDate;
 
-   auto prev_date = startDate; 
-  
    auto events = _landUnitData->getVariable("spatialevents")->value().extract<const DynamicVector>();
 
    for (auto i = 0; i < events.size(); i++) {
       auto temp = events[i].extract<DynamicObject>();
-
 
       if (temp["type"] == "agri.PlantEvent") {
          auto plant = std::make_shared<PlantEvent>(eventId++, temp["name"].extract<std::string>());
@@ -97,10 +72,25 @@ void BuildLandUnitModule::onPreTimingSequence() {
          org_ev->quantity = temp["quantity"];
          org_ev->runtime = temp["runtime"];
          event_queue->emplace_back(date, org_ev);
-
+      
+      } else if (temp["type"] == "agri.PRPEvent") {
+         auto prp = std::make_shared<PRPEvent>(eventId++, "PRP Event");
+         auto date = temp["date"].extract<const DateTime>();
+         prp->animal_type = temp["animal"].extract<std::string>();
+         prp->no_livestock = temp["number"];
+         prp->productivity_class = temp["productivity_class"].extract<std::string>();
+         prp->use = temp["use"].extract<std::string>();
+         event_queue->emplace_back(date, prp);
       }
    }
 
+   auto landuse_events = _landUnitData->getVariable("landuseevents")->value().extract<const DynamicObject>();
+  
+   _landUnitData->getVariable("landtype")->set_value(landuse_events["landtype"]);
+   _landUnitData->getVariable("landuse")->set_value(landuse_events["landuse"]);
+   _landUnitData->getVariable("management")->set_value(landuse_events["management"]);
+   _landUnitData->getVariable("input")->set_value(landuse_events["input"]);
+   
    std::sort(event_queue->begin(), event_queue->end(),
              [](const flint::EventQueueItem& a, const flint::EventQueueItem& b) -> bool { return a._date < b._date; });
 }

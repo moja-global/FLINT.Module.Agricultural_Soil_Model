@@ -41,7 +41,7 @@ extern "C" {
 
 	MOJA_LIB_API int getTransformRegistrations(TransformRegistration* outTransformRegistrations) {
 		int index = 0;
-		outTransformRegistrations[index++] = TransformRegistration{ "TimeSeriesTransform",	[]() -> flint::ITransform* { return new TimeSeriesTransform(); } };
+		outTransformRegistrations[index++] = TransformRegistration{ "CompositeTimeSeriesTransform",	[]() -> flint::ITransform* { return new CompositeTimeSeriesTransform(); } };
 		outTransformRegistrations[index++] = TransformRegistration{ "SpatialTransform",	[]() -> flint::ITransform* { return new SpatialTransform(); } };
 		return index;
 	}

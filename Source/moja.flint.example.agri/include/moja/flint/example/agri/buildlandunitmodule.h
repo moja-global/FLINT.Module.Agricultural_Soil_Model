@@ -29,12 +29,11 @@ class BuildLandUnitModule : public flint::ModuleBase {
       void onPreTimingSequence() override;
 
    private:
-      flint::IVariable* landuse_;
       flint::IVariable* climate_;
       const flint::IVariable* zones_;
 };
 
-}  // namespace chapman_richards
-}  // namespace modules
+}  // namespace agri
+}  // namespace example
+}  // namespace flint
 }  // namespace moja
-}

@@ -43,7 +43,7 @@ class AGRI_API DisturbanceEventModule : public flint::ModuleBase, DisturbanceEve
    std::string climate;
 };
 
-}  // namespace chapman_richards
-}  // namespace modules
 }  // namespace agri
-}
+}  // namespace example
+}  // namespace flint
+}  // namespace moja

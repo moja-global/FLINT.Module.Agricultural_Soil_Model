@@ -7,6 +7,7 @@
 
 #include <moja/datarepository/datarepository.h>
 #include <moja/datarepository/iproviderspatialrasterinterface.h>
+#include <moja/logging.h>
 
 #include <boost/algorithm/string.hpp>
 
@@ -56,6 +57,7 @@ const DynamicVar& SpatialTransform::value() const {
       events.emplace_back(event1);
       events.emplace_back(event2);
       _cachedValue = events;
+
    } else if (_dataPropertyName == "fertilizer") {
       DynamicObject event1;
       event1.insert<std::string>("type", "agri.NFertEvent");
@@ -75,25 +77,33 @@ const DynamicVar& SpatialTransform::value() const {
       events.emplace_back(event2);
       _cachedValue = events;
    } else if (_dataPropertyName == "landuse") {
-      DynamicObject change1;
-      change1.insert<std::string>("type", "landuse");
-      change1.insert<DateTime>("date", DateTime(2001, 1, 1));
-      change1.insert<std::string>("landuse", "F");
-      change1.insert<std::string>("management", "");
-      change1.insert<std::string>("input", "");
+      DynamicObject change;
+      change.insert<std::string>("type", "landuse");
+      change.insert<std::string>("data_property", "data_yearly");
+      std::vector<DynamicVar> landtype{"F", "C", "C", "G", "G", "G"};
+      change.insert<std::vector<DynamicVar>>("landtype", landtype);
+      std::vector<DynamicVar> landuse{"", "Long term cultivated", "Perennial crop", "", "", ""};
+      change.insert<std::vector<DynamicVar>>("landuse", landuse);
+      std::vector<DynamicVar> management{
+          "", "Reduced", "Full", "High intensity grazing", "High intensity grazing", "High intensity grazing"};
+      change.insert<std::vector<DynamicVar>>("management", management);
+      std::vector<DynamicVar> input{"", "Medium", "Medium", "High", "High", "High"};
+      change.insert<std::vector<DynamicVar>>("input", input);
 
-      DynamicObject change2;
-      change2.insert<std::string>("type", "landuse");
-      change2.insert<DateTime>("date", DateTime(2003, 1, 1));
-      change2.insert<std::string>("landuse", "C");
-      change2.insert<std::string>("management", "Perennial crop");
-      change2.insert<std::string>("input", "Full");
-
-      events.emplace_back(change1);
-      events.emplace_back(change2);
+      _cachedValue = change;
+   } else if (_dataPropertyName == "prp") {
+      DynamicObject animals;
+      animals.insert<DateTime>("date", DateTime(2003, 8, 1));
+      animals.insert<std::string>("type", "agri.PRPEvent");
+      animals.insert<std::string>("animal", "Buffalo");
+      animals.insert<int>("number", 3);
+      animals.insert<std::string>("productivity_class", "High");
+      animals.insert<std::string>("use", "Other");
+      
+      events.emplace_back(animals);
       _cachedValue = events;
    }
-   
+
    return _cachedValue;
 }
 

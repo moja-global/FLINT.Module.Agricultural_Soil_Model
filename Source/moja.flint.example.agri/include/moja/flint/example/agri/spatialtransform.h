@@ -31,8 +31,8 @@ class AGRI_API SpatialTransform : public ITransform {
    mutable std::string _dataPropertyName;
 };
 
+}  // namespace agri
+}  // namespace example
 }  // namespace flint
 }  // namespace moja
-}
-}
 #endif  // MOJA_FLINT_LOCATIONIDXFROMFLINTDATATRANSFORM_H_
