@@ -82,6 +82,9 @@
       "harvested": 0
     },
     {
+      "systems": "default"
+    },
+    {
       "soil_type": "HAC"
     },
     {
@@ -159,7 +162,7 @@
         "transform": {
           "library": "moja.flint.example.agri",
           "type": "SpatialTransform",
-          "data_property": "prp"
+          "data_property": "manure_management"
         }
       }
     },
@@ -249,6 +252,32 @@
           "type": "SQLQueryTransform",
           "provider": "SQLite",
           "queryFile": "config/sql/AWMS.sql"
+        }
+      }
+    },
+    {
+      "Nitrogen_Loss": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/Nitrogen_loss.sql"
+        }
+      }
+    },
+    {
+      "AWMS_manure_management": {
+        "Liquid with natural crust cover": {
+          "Dairy cattle": 0,
+          "Other cattle": 0,
+          "Buffalo": 0,
+          "Sheep": 0 
+        },
+        "Solid storage": {
+          "Dairy cattle": 5,
+          "Other cattle": 3,
+          "Buffalo": 2,
+          "Sheep": 2
         }
       }
     }

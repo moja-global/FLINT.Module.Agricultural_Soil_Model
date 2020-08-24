@@ -52,7 +52,13 @@
       "ipcc_climate_zone": "Tropical Dry"
     },
     {
+      "region": "Latin America"
+    },
+    {
       "soil_type": "HAC"
+    },
+    {
+      "systems": "default"
     },
     {
       "landtype": [ "F", "C", "C", "G", "G", "G"]
@@ -61,24 +67,21 @@
       "landuse": [ "", "Long term cultivated", "Perennial crop", "", "", ""]
     },
     {
-      "change": {
-        "transform": {
-          "allow_nulls": true,
-          "library": "moja.flint.example.agri",
-          "type": "CompositeTimeSeriesTransform",
-          "data_property": "data_yearly",
-          "vars": [ "landtype", "landuse", "management", "input"]
-        }
-      }
-    },
-    {
       "management": [ "", "Reduced", "Full", "High intensity grazing", "High intensity grazing", "High intensity grazing"]
     },
     {
       "input": [ "", "Medium", "Medium", "High", "High", "High"]
     },
     {
-      "region": "Latin America"
+      "change": {
+        "transform": {
+          "allow_nulls": true,
+          "library": "moja.flint.example.agri",
+          "type": "CompositeTimeSeriesTransform",
+          "data_property": "data_yearly",
+          "vars": ["landtype", "landuse", "management", "input"]
+        }
+      }
     },
     {
       "spatialLocationInfo": {
@@ -170,6 +173,32 @@
       }
     },
     {
+      "Nitrogen_Loss": {
+        "transform": {
+          "library": "internal.flint",
+          "type": "SQLQueryTransform",
+          "provider": "SQLite",
+          "queryFile": "config/sql/Nitrogen_loss.sql"
+        }
+      }
+    },
+    {
+      "AWMS_manure_management": {
+        "Liquid with natural crust cover": {
+          "Dairy cattle": 0,
+          "Other cattle": 0,
+          "Buffalo": 0,
+          "Sheep": 0 
+        },
+        "Solid storage": {
+          "Dairy cattle": 5,
+          "Other cattle": 3,
+          "Buffalo": 2,
+          "Sheep": 2
+        }
+      }
+    },
+    {
       "animal_type" : "default"
     },
     {
@@ -232,12 +261,17 @@
                   "$date": "2003/08/01"
                 },
                 "id": 3,
-                "type": "agri.PRPEvent",
-                "name": "PRP Event",
-                "animal_type": "Buffalo",
-                "no_livestock": 3,
-                "productivity_class": "high",
-                "use": "Other"
+                "type": "agri.ManureManagementEvent",
+                "name": "Manure Management Event",
+                "N_cdg": 5,
+                "N_bedding": 5,
+                "animal_type": ["Dairy cattle", "Buffalo", "Sheep"],
+                "no_livestock": [10, 10, 5],
+                "productivity_class": ["High", "High", "Low"],
+                "use": ["", "Dairy", "Dairy"],
+                "frac_feed": 0,
+                "frac_cnst": 0,
+                "frac_fuel": 0
               }
             ]
           }
@@ -264,10 +298,15 @@
       "library": "moja.flint.example.agri",
       "order": 4
     },
+    "ManureManagementModule": {
+      "enabled": false,
+      "library": "moja.flint.example.agri",
+      "order": 5
+    },
     "OutputerStream": {
       "enabled": true,
       "library": "internal.flint",
-      "order": 5,
+      "order": 6,
       "settings": {
         "output_filename": "Example_Agri_Point_Stock.csv",
         "output_to_screen": false,
@@ -278,7 +317,7 @@
     "OutputerStreamFlux": {
       "enabled": true,
       "library": "internal.flint",
-      "order": 6,
+      "order": 7,
       "settings": {
         "output_filename": "Example_Agri_Point_Flux.csv",
         "output_to_screen": true,

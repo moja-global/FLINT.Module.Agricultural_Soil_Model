@@ -91,14 +91,23 @@ const DynamicVar& SpatialTransform::value() const {
       change.insert<std::vector<DynamicVar>>("input", input);
 
       _cachedValue = change;
-   } else if (_dataPropertyName == "prp") {
+   } else if (_dataPropertyName == "manure_management") {
       DynamicObject animals;
       animals.insert<DateTime>("date", DateTime(2003, 8, 1));
-      animals.insert<std::string>("type", "agri.PRPEvent");
-      animals.insert<std::string>("animal", "Buffalo");
-      animals.insert<int>("number", 3);
-      animals.insert<std::string>("productivity_class", "High");
-      animals.insert<std::string>("use", "Other");
+      animals.insert<std::string>("type", "agri.ManureManagementEvent");
+      std::vector<DynamicVar> animal_type{"Dairy cattle", "Buffalo", "Sheep"};
+      animals.insert<std::vector<DynamicVar>>("animal_type", animal_type);
+      std::vector<DynamicVar> no_livestock{10, 10, 5};
+      animals.insert<std::vector<DynamicVar>>("no_livestock", no_livestock);
+      std::vector<DynamicVar> productivity_class{"High", "High", "Low"};
+      animals.insert<std::vector<DynamicVar>>("productivity_class", productivity_class);
+      std::vector<DynamicVar> use{"", "Dairy", "Dairy"};
+      animals.insert<std::vector<DynamicVar>>("use", use);
+      animals.insert<DynamicVar> ("N_cdg", 5);
+      animals.insert<DynamicVar> ("N_bedding", 5);
+      animals.insert<DynamicVar> ("frac_feed", 0);
+      animals.insert<DynamicVar> ("frac_fuel", 0);
+      animals.insert<DynamicVar> ("frac_cnst", 0);
       
       events.emplace_back(animals);
       _cachedValue = events;
