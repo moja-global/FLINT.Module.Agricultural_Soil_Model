@@ -136,8 +136,7 @@ void DisturbanceEventModule::simulate(const EmissionEvent& fert) {
 }
 
 void DisturbanceEventModule::simulate(const HarvestEvent& harvest) {
-   const auto yield = _landUnitData->getVariable("yield");
-   if (yield->value() == 0) {
+   if (planted == false) {
       std::string str = "Harvest Event cannot occur before plantation of crop";
       BOOST_THROW_EXCEPTION(flint::LocalDomainError()
                             << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
@@ -175,7 +174,7 @@ void DisturbanceEventModule::simulate(const HarvestEvent& harvest) {
    double N_BG = FCR_table["N_BG"].convert<double>();
    double cf = FCR_table["Cf"].convert<double>();
    double area = 1;
-   double dry_crop_yield = yield->value() * DRY;
+   double dry_crop_yield = yield * DRY;
    double above_ground_dry_residue = dry_crop_yield * R_AG;
    double below_ground_residue = (dry_crop_yield + above_ground_dry_residue) * R_S * area * harvest.frac_renew;
    double F_CR = above_ground_dry_residue * N_AG * (1.0 - harvest.frac_remove - (harvest.frac_burnt * cf)) +
@@ -184,10 +183,10 @@ void DisturbanceEventModule::simulate(const HarvestEvent& harvest) {
    operation->addTransfer(soil_, debris_, F_CR * EF_1_value);
    _landUnitData->submitOperation(operation);
 
-   auto harvested = _landUnitData->getVariable("harvested");
-   harvested->set_value(1);
+   harvested = true;
    cropType->set_value("default");
-   yield->set_value(0);
+   yield = 0;
+   planted = false;
 }
 
 void DisturbanceEventModule::simulate(const ManureManagementEvent& manure) {
@@ -367,14 +366,14 @@ void DisturbanceEventModule::simulate(const ManureManagementEvent& manure) {
 
 void DisturbanceEventModule::simulate(const PlantEvent& plant) {
    auto crop_type = _landUnitData->getVariable("crop_type");
-   auto yield = _landUnitData->getVariable("yield")->value();
-   if (yield > 0) {
+   if (planted) {
       std::string str = "Plant event has occured when the previous yield has not been harvested";
       BOOST_THROW_EXCEPTION(flint::LocalDomainError()
                             << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
                             << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
    }
    crop_type->set_value(plant.name);
+   planted = true;
 }
 
 void DisturbanceEventModule::disturbanceEventHandler(const flint::EventQueueItem* event) {
@@ -383,11 +382,10 @@ void DisturbanceEventModule::disturbanceEventHandler(const flint::EventQueueItem
 }
 
 void DisturbanceEventModule::onTimingStep() {
-   auto yield = _landUnitData->getVariable("yield");
    auto crop_type = _landUnitData->getVariable("crop_type")->value().extract<std::string>();
    double decayRate;
 
-   if (crop_type != "default") {
+   if (planted) {
       DynamicObject FCR_table;
 
       try {
@@ -399,10 +397,9 @@ void DisturbanceEventModule::onTimingStep() {
                                << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
       }
 
-      yield->set_value(FCR_table["Growth_Rate"] + yield->value());
+      yield += FCR_table["Growth_Rate"]; 
       decayRate = FCR_table["Decay_Rate"];
    }
-   auto harvested = _landUnitData->getVariable("harvested")->value();
 
    if (harvested) {
       auto operation = _landUnitData->createProportionalOperation();
