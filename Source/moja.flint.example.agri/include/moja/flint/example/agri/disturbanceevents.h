@@ -14,8 +14,8 @@ namespace agri {
 class NFertEvent;
 class EmissionEvent;
 class HarvestEvent;
-class PRPEvent;
 class PlantEvent;
+class ManureManagementEvent;
 
 class AGRI_API DisturbanceEventHandler {
   public:
@@ -24,7 +24,7 @@ class AGRI_API DisturbanceEventHandler {
    virtual void simulate(const NFertEvent& fert) {}
    virtual void simulate(const EmissionEvent& fert) {}
    virtual void simulate(const HarvestEvent& harvest) {}
-   virtual void simulate(const PRPEvent& prp) {}
+   virtual void simulate(const ManureManagementEvent& prp) {}
    virtual void simulate(const PlantEvent& prp) {}
 };
 

@@ -12,7 +12,7 @@ namespace agri {
 class NFertEvent;
 class EmissionEvent;
 class HarvestEvent;
-class PRPEvent;
+class ManureManagementEvent;
 class PlantEvent;
 
 class AGRI_API DisturbanceEventModule : public flint::ModuleBase, DisturbanceEventHandler {
@@ -33,7 +33,7 @@ class AGRI_API DisturbanceEventModule : public flint::ModuleBase, DisturbanceEve
    void simulate(const NFertEvent& fert) override;
    void simulate(const EmissionEvent& fert) override;
    void simulate(const HarvestEvent& harvest) override;
-   void simulate(const PRPEvent& prp) override;
+   void simulate(const ManureManagementEvent& manure) override;
    void simulate(const PlantEvent &plant) override;
 
    const flint::IPool* atmosphere_;

@@ -73,14 +73,20 @@ void BuildLandUnitModule::onPreTimingSequence() {
          org_ev->runtime = temp["runtime"];
          event_queue->emplace_back(date, org_ev);
       
-      } else if (temp["type"] == "agri.PRPEvent") {
-         auto prp = std::make_shared<PRPEvent>(eventId++, "PRP Event");
+      } else if (temp["type"] == "agri.ManureManagementEvent") {
+         
+         auto manure = std::make_shared<ManureManagementEvent>(eventId++, "Manure Management Event");
          auto date = temp["date"].extract<const DateTime>();
-         prp->animal_type = temp["animal"].extract<std::string>();
-         prp->no_livestock = temp["number"];
-         prp->productivity_class = temp["productivity_class"].extract<std::string>();
-         prp->use = temp["use"].extract<std::string>();
-         event_queue->emplace_back(date, prp);
+         manure->animal_type = temp["animal_type"].extract<std::vector<DynamicVar>>();
+         manure->no_livestock = temp["no_livestock"].extract<std::vector<DynamicVar>>();
+         manure->productivity_class = temp["productivity_class"].extract<std::vector<DynamicVar>>();
+         manure->use = temp["use"].extract<std::vector<DynamicVar>>();
+         manure->frac_cnst = temp["frac_cnst"];
+         manure->frac_feed = temp["frac_feed"];
+         manure->frac_fuel = temp["frac_fuel"];
+         manure->N_cdg = temp["N_cdg"];
+         manure->N_bedding = temp["N_bedding"];
+         event_queue->emplace_back(date, manure);
       }
    }
 

@@ -65,7 +65,7 @@ void DisturbanceEventModule::onTimingInit() {
    atmosphere_ = _landUnitData->getPool("atmosphere");
    soil_ = _landUnitData->getPool("soil");
    debris_ = _landUnitData->getPool("debris");
-   
+
    auto climate_ = _landUnitData->getVariable("ipcc_climate_zone");
 
    try {
@@ -85,7 +85,6 @@ void DisturbanceEventModule::onTimingInit() {
       }
       climate_->set_value(table["Climate_Zone"]);
    } catch (const std::exception& e) {
-      
    }
 
    std::string climateZone = _landUnitData->getVariable("ipcc_climate_zone")->value().convert<std::string>();
@@ -191,147 +190,179 @@ void DisturbanceEventModule::simulate(const HarvestEvent& harvest) {
    yield->set_value(0);
 }
 
-void DisturbanceEventModule::simulate(const PRPEvent& prp) {
-   MOJA_LOG_DEBUG << "PRPEvent occured";
+void DisturbanceEventModule::simulate(const ManureManagementEvent& manure) {
+   MOJA_LOG_DEBUG << "ManureManagementEvent occured";
    auto EF_3 = _landUnitData->getVariable("EF_3")->value().extract<DynamicObject>();
    double EF_3_value;
-   if (prp.animal_type == "Dairy cattle" || prp.animal_type == "Other cattle") {
-      if (climate == "default") {
-         EF_3_value = EF_3["cattle_default"];
-      } else if (climate == "dry") {
-         EF_3_value = EF_3["cattle_dry"];
+
+   auto AWMS_manure = _landUnitData->getVariable("AWMS_manure_management")->value().extract<DynamicObject>();
+   auto temp = AWMS_manure.members();
+   std::vector<std::string> systems(temp.begin(), temp.end());
+
+   int size = manure.animal_type.size();
+
+   if (size != manure.no_livestock.size() || size != manure.productivity_class.size() || size != manure.use.size()) {
+      std::string str = "Size of the variable arrays is not same";
+      BOOST_THROW_EXCEPTION(flint::IncompleteConfigurationException()
+                            << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
+                            << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+   }
+
+   for (auto i = 0; i < size; i++) {
+      auto animal_type = manure.animal_type[i].extract<std::string>();
+      int no_livestock = manure.no_livestock[i];
+      auto productivity_class = manure.productivity_class[i].extract<std::string>();
+      auto use = manure.use[i].extract<std::string>();
+
+      if (animal_type == "Dairy cattle" || animal_type == "Other cattle") {
+         if (climate == "default") {
+            EF_3_value = EF_3["cattle_default"];
+         } else if (climate == "dry") {
+            EF_3_value = EF_3["cattle_dry"];
+         } else {
+            EF_3_value = EF_3["cattle_wet"];
+         }
       } else {
-         EF_3_value = EF_3["cattle_wet"];
+         EF_3_value = EF_3["other"];
       }
-   } else {
-      EF_3_value = EF_3["other"];
+      const auto region = _landUnitData->getVariable("region")->value().convert<std::string>();
+      std::string region_1, region_2;
+
+      if (region == "Latin America" || region == "India" || region == "Middle East" || region == "Africa" ||
+          region == "Asia") {
+         if (productivity_class == "High")
+            region_1 = region + " High";
+         else if (productivity_class == "Low")
+            region_1 = region + " Low";
+         else
+            region_1 = region + " Mean";
+         region_2 = region;
+      }
+
+      const auto animalType = _landUnitData->getVariable("animal_type");
+      animalType->set_value(animal_type);
+      DynamicObject Animal_weights;
+
+      try {
+         Animal_weights = _landUnitData->getVariable("Animal_weights")->value().extract<const DynamicObject>();
+      } catch (const std::exception& e) {
+         std::string str = "Animal type: " + animal_type + " not present in FLINTagri.db Animal_weights";
+         BOOST_THROW_EXCEPTION(flint::LocalDomainError()
+                               << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
+                               << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+      }
+
+      DynamicObject ex_rate;
+
+      try {
+         ex_rate = _landUnitData->getVariable("N_Excretion_rate")->value().extract<const DynamicObject>();
+      } catch (const std::exception& e) {
+         std::string str = "Animal type: " + animal_type + " not present in FLINTagri.db N_excretion_rate";
+         BOOST_THROW_EXCEPTION(flint::LocalDomainError()
+                               << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
+                               << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+      }
+
+      double N_rate = ex_rate[region_1];
+      double weight = Animal_weights[region_1];
+      double N_ex = N_rate * weight / 1000;
+
+      std::string animal = animal_type;
+
+      if (animal_type == "Horses" || animal_type == "Mules" || animal_type == "Camels" || animal_type == "Asses") {
+         animal = "Goat";
+      } else if (animal_type == "Swine Finishing" || animal_type == "Swine Breeding") {
+         animal = animal_type + " " + productivity_class;
+      } else if (animal_type == "Buffalo") {
+         animal = animal_type + " Other";
+         if (use == "Dairy") animal = animal_type + " Dairy";
+      } else if (animal_type == "Sheep") {
+         if (use == "Dairy")
+            animal = animal_type + " Dairy";
+         else if (use == "Meat")
+            animal = animal_type + " Meat";
+      }
+
+      animalType->set_value(animal);
+      DynamicObject AWMS;
+
+      try {
+         AWMS = _landUnitData->getVariable("AWMS")->value().extract<const DynamicObject>();
+      } catch (const std::exception& e) {
+         std::string str = "Animal type: " + animal + " not present in FLINTagri.db AWMS";
+         BOOST_THROW_EXCEPTION(flint::LocalDomainError()
+                               << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
+                               << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+      }
+
+      double MS = AWMS[region_2].convert<double>();
+      double Fprp = no_livestock * N_ex * MS;
+
+      auto operation = _landUnitData->createStockOperation();
+      operation->addTransfer(soil_, atmosphere_, Fprp * EF_3_value);
+      _landUnitData->submitOperation(operation);
+
+      
+
+      auto EF_1 = _landUnitData->getVariable("EF_1")->value().extract<DynamicObject>();
+      double EF_1_value;
+      if (climate == "default") {
+         EF_1_value = EF_1["default"];
+      } else if (climate == "dry") {
+         EF_1_value = EF_1["dry"];
+      } else {
+         EF_1_value = EF_1["wet"];
+      }
+
+      double NMMS = 0;
+
+      for (auto i = 0; i < systems.size(); i++) {
+         auto temp = AWMS_manure[systems[i]].extract<DynamicObject>();
+         double AWMS_system;
+         if (temp.find(animal_type) != temp.end()) {
+            AWMS_system = temp[animal_type];
+         } else {
+            std::string str = animal_type + " not present in AWMS_manure_management under system " + systems[i];
+            BOOST_THROW_EXCEPTION(flint::IncompleteConfigurationException()
+                                  << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
+                                  << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+         }
+
+         double EF_3_system, frac_gas, frac_leach;
+
+         std::string temp_animal = animal_type;
+
+         if (animal_type != "Swine" && animal_type != "Dairy cattle" && animal_type != "Other cattle" &&
+             animal_type != "Poultry")
+            temp_animal = "Other";
+
+         auto random = _landUnitData->getVariable("systems");
+         random->set_value(systems[i]);
+         auto nitrogenLoss =
+             _landUnitData->getVariable("Nitrogen_Loss")->value().extract<const DynamicObject>();
+         EF_3_system = nitrogenLoss["EF_3"];
+         frac_gas = nitrogenLoss[temp_animal + " Gas"];
+         frac_leach = nitrogenLoss[temp_animal + " Leach"];
+
+         double R_N2 = 3;
+         double frac_N2MS = R_N2 * EF_3_system;
+
+         double frac_loss = frac_gas + frac_leach + frac_N2MS + EF_3_system;
+
+         auto N_cdg = manure.N_cdg;
+         auto N_bedding = manure.N_bedding;
+
+         NMMS += (no_livestock * N_ex * AWMS_system + N_cdg) * (1 - frac_loss) + no_livestock * AWMS_system * N_bedding;
+      }
+
+      auto frac_feed = manure.frac_feed;
+      auto frac_cnst = manure.frac_cnst;
+      auto frac_fuel = manure.frac_fuel;
+
+      operation = _landUnitData->createStockOperation();
+      operation->addTransfer(soil_, atmosphere_, NMMS * (1 - (frac_feed + frac_cnst + frac_fuel)) * EF_1_value);
+      _landUnitData->submitOperation(operation);
    }
-   const auto region = _landUnitData->getVariable("region")->value().convert<std::string>();
-   std::string region_1, region_2;
-
-   if (region == "North America") {
-      region_1 = "North_America";
-      region_2 = region_1;
-   } else if (region == "Western Europe") {
-      region_1 = "Western_Europe";
-      region_2 = region_1;
-   } else if (region == "Eastern Europe") {
-      region_1 = "Eastern_Europe";
-      region_2 = region_1;
-   } else if (region == "Russia") {
-      region_1 = "Eastern Europe";
-      region_2 = "Russia";
-   } else if (region == "Oceania") {
-      region_1 = "Oceania";
-      region_2 = region_1;
-   } else if (region == "Latin America") {
-      if (prp.productivity_class == "high")
-         region_1 = "Latin_America_High";
-      else if (prp.productivity_class == "low")
-         region_1 = "Latin_America_Low";
-      else
-         region_1 = "Latin_America_Mean";
-      region_2 = "Latin_America";
-   } else if (region == "Africa") {
-      if (prp.productivity_class == "high")
-         region_1 = "Africa_High";
-      else if (prp.productivity_class == "low")
-         region_1 = "Africa_Low";
-      else
-         region_1 = "Africa_Mean";
-      region_2 = "Africa";
-   } else if (region == "Middle East") {
-      if (prp.productivity_class == "high")
-         region_1 = "Middle_East_High";
-      else if (prp.productivity_class == "low")
-         region_1 = "Middle_East_Low";
-      else
-         region_1 = "Middle_East_Mean";
-      region_2 = "Middle_East";
-   } else if (region == "Asia") {
-      if (prp.productivity_class == "high")
-         region_1 = "Asia_High";
-      else if (prp.productivity_class == "low")
-         region_1 = "Asia_Low";
-      else
-         region_1 = "Asia_Mean";
-      region_2 = "Asia";
-   } else if (region == "India") {
-      if (prp.productivity_class == "high")
-         region_1 = "India_High";
-      else if (prp.productivity_class == "low")
-         region_1 = "India_Low";
-      else
-         region_1 = "India_Mean";
-      region_2 = "India";
-   }
-
-   const auto animalType = _landUnitData->getVariable("animal_type");
-   animalType->set_value(prp.animal_type);
-   DynamicObject Animal_weights;
-
-   try {
-      Animal_weights = _landUnitData->getVariable("Animal_weights")->value().extract<const DynamicObject>();
-   } catch (const std::exception& e) {
-      std::string str = "Animal type: " + prp.animal_type + " not present in FLINTagri.db Animal_weights";
-      BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                            << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                            << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
-   }
-
-   DynamicObject ex_rate;
-
-   try {
-      ex_rate = _landUnitData->getVariable("N_Excretion_rate")->value().extract<const DynamicObject>();
-   } catch (const std::exception& e) {
-      std::string str = "Animal type: " + prp.animal_type + " not present in FLINTagri.db N_excretion_rate";
-      BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                            << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                            << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
-   }
-
-   double N_rate = ex_rate[region_1];
-   double weight = Animal_weights[region_1];
-   double N_ex = N_rate * weight / 1000;
-
-   std::string animal = prp.animal_type;
-
-   if (prp.animal_type == "Horses" || prp.animal_type == "Mules" || prp.animal_type == "Camels" ||
-       prp.animal_type == "Asses") {
-      animal = "Goat";
-   } else if (prp.animal_type == "Swine Finishing" || prp.animal_type == "Swine Breeding") {
-      if (prp.productivity_class == "high")
-         animal = prp.animal_type + " High";
-      else if (prp.productivity_class == "low")
-         animal = prp.animal_type + " Low";
-   } else if (prp.animal_type == "Buffalo") {
-      animal = prp.animal_type + " Other";
-      if (prp.use == "Dairy") animal = prp.animal_type + " Dairy";
-   } else if (prp.animal_type == "Sheep") {
-      if (prp.use == "Dairy")
-         animal = prp.animal_type + " Dairy";
-      else if (prp.use == "Meat")
-         animal = prp.animal_type + " Meat";
-   }
-
-   animalType->set_value(animal);
-   DynamicObject AWMS;
-
-   try {
-      AWMS = _landUnitData->getVariable("AWMS")->value().extract<const DynamicObject>();
-   } catch (const std::exception& e) {
-      std::string str = "Animal type: " + animal + " not present in FLINTagri.db AWMS";
-      BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                            << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                            << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
-   }
-
-   double MS = AWMS[region_2].convert<double>();
-   double Fprp = prp.no_livestock * N_ex * MS;
-
-   auto operation = _landUnitData->createStockOperation();
-   operation->addTransfer(soil_, atmosphere_, Fprp * EF_3_value);
-   _landUnitData->submitOperation(operation);
 }
 
 void DisturbanceEventModule::simulate(const PlantEvent& plant) {
