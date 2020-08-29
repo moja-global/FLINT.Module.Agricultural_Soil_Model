@@ -16,6 +16,37 @@ cd Source\build
 
 cmake -G "Visual Studio 16 2019" -DCMAKE_INSTALL_PREFIX=C:\Development\Software\moja -DVCPKG_TARGET_TRIPLET=x64-windows -DENABLE_TESTS=OFF -DOPENSSL_ROOT_DIR=c:\Development\moja-global\vcpkg\installed\x64-windows -DCMAKE_TOOLCHAIN_FILE=c:\Development\moja-global\vcpkg\scripts\buildsystems\vcpkg.cmake ..
 ```
+#### Important: You need to set the correct path to GDAL library in `libs.base_agri.win.json` file in
+```FLINT.Module.Agricultural_Soil_Model/Run_Env/config/ ```
+```
+{
+    "Libraries": {
+    	"moja.modules.gdal": {
+            "library": "moja.modules.gdald.dll",
+	     "path": "C:/Users/sulay/Desktop/moja-global/FLINT/Source/build/bin/Debug",
+            "type": "external"
+        },
+```
+Change `"path": "C:/Users/sulay/Desktop/moja-global/FLINT/Source/build/bin/Debug",` to the path where FLINT is installed and GDAL is built.
+For example if FLINT is installed in `C:/Development/moja-global/FLINT`, then the path for GDAL will be `C:/Development/moja-global/FLINT/Source/build/bin/Debug`
+
+**For example the `libs.base_agri.win.json` file should look like this :**
+ ```
+{
+    "Libraries": {
+    	"moja.modules.gdal": {
+            "library": "moja.modules.gdald.dll",
+			"path": "C:/Development/moja-global/FLINT/Source/build/bin/Debug",
+            "type": "external"
+        },
+        "moja.flint.example.agri": {
+	        "library": "moja.flint.example.agrid.dll",
+	        "path": "%LOCAL_LIBS%",
+	        "type": "external"
+        }
+    }
+}
+```
 
 ### Running the project
 
@@ -72,7 +103,7 @@ moja global welcomes a wide range of contributions as explained in [Contributing
   
 ## FAQ and Other Questions  
 
-* You can find FAQs on the [Wiki](https://github.com/moja.global/.github/wiki).  
+* You can find FAQs on the [Wiki](https://github.com/moja-global/GSoC.FLINT.Module.Agricultural_Soil_Model/wiki).  
 * If you have a question about the code, submit [user feedback](https://github.com/moja-global/About-moja-global/blob/master/Contributing/How-to-Provide-User-Feedback.md) in the relevant repository  
 * If you have a general question about a project or repository or moja global, [join moja global](https://github.com/moja-global/About-moja-global/blob/master/Contributing/How-to-Join-moja-global.md) and 
     * [submit a discussion](https://help.github.com/en/articles/about-team-discussions) to the project, repository or moja global [team](https://github.com/orgs/moja-global/teams)
