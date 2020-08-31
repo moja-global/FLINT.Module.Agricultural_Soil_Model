@@ -22,15 +22,6 @@
                 "layer_path": "data/zones_orig.tif",
                 "metadata_required": false,
                 "nodata": 255
-            },
-            {
-                "name": "land_use",
-                "layer_type": "GridLayer",
-                "layer_data": "Int16",
-                "layer_prefix": "",
-                "layer_path": "data/land_use.tif",
-                "metadata_required": false,
-                "nodata": 255
             }]
         }
     }

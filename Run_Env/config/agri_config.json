@@ -160,16 +160,6 @@
       }
     },
     {
-      "landuse": {
-        "transform": {
-            "data_id": "land_use",
-            "library": "internal.flint",
-            "provider": "FlintTiled",
-            "type": "LocationIdxFromFlintDataTransform"
-        }
-      }
-    },
-    {
       "Wet_Dry_Climate": {
         "transform": {
           "library": "internal.flint",
