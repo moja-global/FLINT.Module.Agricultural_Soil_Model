@@ -103,16 +103,6 @@
       }
     },
     {
-      "Cf_table": {
-        "transform": {
-          "library": "internal.flint",
-          "type": "SQLQueryTransform",
-          "provider": "SQLite",
-          "queryFile": "config/sql/Cf_table.sql"
-        }
-      }
-    },
-    {
       "Animal_weights": {
         "transform": {
           "library": "internal.flint",
@@ -203,12 +193,6 @@
     },
     {
       "crop_type": "default"
-    },
-    {
-      "yield": 0
-    },
-    {
-      "harvested": 0
     },
     {
       "eventqueue": {

@@ -76,12 +76,6 @@
       "animal_type" : "default"
     },
     {
-      "yield" : 0
-    },
-    {
-      "harvested": 0
-    },
-    {
       "systems": "default"
     },
     {
@@ -138,16 +132,6 @@
       }
     },
     {
-      "Cf_table": {
-        "transform": {
-          "library": "internal.flint",
-          "type": "SQLQueryTransform",
-          "provider": "SQLite",
-          "queryFile": "config/sql/Cf_table.sql"
-        }
-      }
-    },
-    {
       "zones": {
         "transform": {
           "data_id": "zones",
@@ -162,7 +146,7 @@
         "transform": {
           "library": "moja.flint.example.agri",
           "type": "SpatialTransform",
-          "data_property": "manure_management"
+          "data_property": "harvest"
         }
       }
     },
@@ -172,16 +156,6 @@
           "library": "moja.flint.example.agri",
           "type": "SpatialTransform",
           "data_property": "landuse"
-        }
-      }
-    },
-    {
-      "landuse": {
-        "transform": {
-            "data_id": "land_use",
-            "library": "internal.flint",
-            "provider": "FlintTiled",
-            "type": "LocationIdxFromFlintDataTransform"
         }
       }
     },

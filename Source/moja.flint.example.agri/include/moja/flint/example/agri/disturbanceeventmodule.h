@@ -41,6 +41,8 @@ class AGRI_API DisturbanceEventModule : public flint::ModuleBase, DisturbanceEve
    const flint::IPool* initial_values;
    const flint::IPool* debris_;
    std::string climate;
+   bool harvested = false, planted = false;
+   double yield = 0;
 };
 
 }  // namespace agri
