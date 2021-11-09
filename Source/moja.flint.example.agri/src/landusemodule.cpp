@@ -35,17 +35,13 @@ void LandUseModule::InitializeForASimulation() {
         stockRef = _stockRef->value().extract<const DynamicObject>();
     } catch (const std::exception& e) {
        std::string str = "Climate zone: " + climateZone + " not present in SOC_REF FLINTagri.db";
-       BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                             << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                             << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+       throw std::runtime_error("moja.flint.example.agri: LandUseModule::InitializeForASimulation()" + str);
     }
     try {
        SOC_REF = stockRef[soilType];
     } catch (const std::exception& e) {
        std::string str = "Soil type: " + soilType + " not present in SOC_REF FLINTagri.db";
-       BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                             << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                             << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+       throw std::runtime_error("moja.flint.example.agri: LandUseModule::InitializeForASimulation()" + str);
     }
 }
 
@@ -82,10 +78,8 @@ void LandUseModule::SubmitMoves() {
             str = "Grassland";
         }
         else {
-            std::string str = "Land type: " + landType + " not present in Soil_Stock_Change FLINTagri.db";
-            BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                                << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                                << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+           std::string str = "Land type: " + landType + " not present in Soil_Stock_Change FLINTagri.db";
+           throw std::runtime_error("moja.flint.example.agri: LandUseModule::SubmitMoves()" + str);
         }
         for (auto i = 0; i < changeFactor.size(); i++) {
             if (changeFactor[i]["Type"] == str
@@ -107,9 +101,7 @@ void LandUseModule::SubmitMoves() {
         }
         if (F_LU == -1 || F_MG == -1 || F_I == -1) {
             std::string str = "The entry: " + landType + " " + landUse + " " + management + " " + input + "is not present in Soil_Stock_Change FLINTagri.db";
-            BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                                << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                                << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+            throw std::runtime_error("moja.flint.example.agri: LandUseModule::SubmitMoves()" + str);
         }
     }
     double SOC_REF_0 = SOC_REF * F_LU * F_MG * F_I * area;
@@ -155,9 +147,7 @@ void LandUseModule::ClassifyClimate() {
       table = _landUnitData->getVariable("Wet_Dry_Climate")->value().extract<DynamicObject>();
    } catch (const std::exception& e) {
       std::string str = "Climate Zone: " + climateZone + " is not an IPCC Climate Zone";
-      BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                            << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                            << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+      throw std::runtime_error("moja.flint.example.agri: LandUseModule::ClassifyClimate()" + str);
    }
    climate = table["Wet/Dry"] ? "wet" : "dry";
 }

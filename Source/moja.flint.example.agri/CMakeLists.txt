@@ -7,6 +7,7 @@ find_package(Poco REQUIRED Foundation JSON Data DataSQLite)
 find_package(Boost COMPONENTS log log_setup REQUIRED)
 find_package(PostgreSQL REQUIRED)
 find_package(moja REQUIRED COMPONENTS moja.flint)
+find_package(fmt CONFIG REQUIRED)
 #find_package(GDAL REQUIRED)
 
 find_package(OpenSSL REQUIRED)
@@ -110,6 +111,7 @@ target_link_libraries(${LIBNAME}
 		moja::moja.flint PostgreSQL::PostgreSQL Poco::Foundation Poco::JSON Poco::Data Poco::DataSQLite
 		OpenSSL::SSL OpenSSL::Crypto
 	PRIVATE
+		fmt::fmt-header-only
 #		${GDAL_LIBRARY}
 	)
 if(WIN32)

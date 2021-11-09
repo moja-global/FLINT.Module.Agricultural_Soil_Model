@@ -78,9 +78,7 @@ void DisturbanceEventModule::onTimingInit() {
             climate_->set_value("default");
          } else {
             std::string str = "Zone Id: " + zones_->value() + " is not an IPCC Climate Zone";
-            BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                                  << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                                  << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+            throw std::runtime_error("moja.flint.example.agri:DisturbanceEventModule " + str);
          }
       }
       climate_->set_value(table["Climate_Zone"]);
@@ -93,9 +91,8 @@ void DisturbanceEventModule::onTimingInit() {
       table = _landUnitData->getVariable("Wet_Dry_Climate")->value().extract<DynamicObject>();
    } catch (const std::exception& e) {
       std::string str = "Climate Zone: " + climateZone + " is not an IPCC Climate Zone";
-      BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                            << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                            << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+      throw std::runtime_error("moja.flint.example.agri:DisturbanceEventModule " +
+                               str);
    }
    climate = table["Wet/Dry"] ? "wet" : "dry";
 }
@@ -138,9 +135,8 @@ void DisturbanceEventModule::simulate(const EmissionEvent& fert) {
 void DisturbanceEventModule::simulate(const HarvestEvent& harvest) {
    if (planted == false) {
       std::string str = "Harvest Event cannot occur before plantation of crop";
-      BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                            << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                            << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+      throw std::runtime_error("moja.flint.example.agri:DisturbanceEventModule" +
+                               str);
    }
    MOJA_LOG_DEBUG << "Harvest Event Occured";
    auto EF_1 = _landUnitData->getVariable("EF_1")->value().extract<DynamicObject>();
@@ -161,9 +157,8 @@ void DisturbanceEventModule::simulate(const HarvestEvent& harvest) {
       FCR_table = _landUnitData->getVariable("FCR_table")->value().extract<const DynamicObject>();
    } catch (const std::exception& e) {
       std::string str = "Crop Type: " + harvest.name + " not present in FLINTagri.db Cf_table";
-      BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                            << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                            << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+      throw std::runtime_error("moja.flint.example.agri:DisturbanceEventModule" +
+                               str);
    }
 
    std::string crop_type = FCR_table["Crops"].convert<std::string>();
@@ -202,9 +197,8 @@ void DisturbanceEventModule::simulate(const ManureManagementEvent& manure) {
 
    if (size != manure.no_livestock.size() || size != manure.productivity_class.size() || size != manure.use.size()) {
       std::string str = "Size of the variable arrays is not same";
-      BOOST_THROW_EXCEPTION(flint::IncompleteConfigurationException()
-                            << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                            << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+      throw std::runtime_error("moja.flint.example.agri:DisturbanceEventModule " +
+                               str);
    }
 
    for (auto i = 0; i < size; i++) {
@@ -246,9 +240,8 @@ void DisturbanceEventModule::simulate(const ManureManagementEvent& manure) {
          Animal_weights = _landUnitData->getVariable("Animal_weights")->value().extract<const DynamicObject>();
       } catch (const std::exception& e) {
          std::string str = "Animal type: " + animal_type + " not present in FLINTagri.db Animal_weights";
-         BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                               << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                               << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+         throw std::runtime_error("moja.flint.example.agri:DisturbanceEventModule:" +
+                                  str);
       }
 
       DynamicObject ex_rate;
@@ -257,9 +250,7 @@ void DisturbanceEventModule::simulate(const ManureManagementEvent& manure) {
          ex_rate = _landUnitData->getVariable("N_Excretion_rate")->value().extract<const DynamicObject>();
       } catch (const std::exception& e) {
          std::string str = "Animal type: " + animal_type + " not present in FLINTagri.db N_excretion_rate";
-         BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                               << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                               << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+         throw std::runtime_error("moja.flint.example.agri:DisturbanceEventModule:" + str);
       }
 
       double N_rate = ex_rate[region_1];
@@ -289,9 +280,7 @@ void DisturbanceEventModule::simulate(const ManureManagementEvent& manure) {
          AWMS = _landUnitData->getVariable("AWMS")->value().extract<const DynamicObject>();
       } catch (const std::exception& e) {
          std::string str = "Animal type: " + animal + " not present in FLINTagri.db AWMS";
-         BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                               << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                               << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+         throw std::runtime_error("moja.flint.example.agri:DisturbanceEventModule:" + str);
       }
 
       double MS = AWMS[region_2].convert<double>();
@@ -322,9 +311,7 @@ void DisturbanceEventModule::simulate(const ManureManagementEvent& manure) {
             AWMS_system = temp[animal_type];
          } else {
             std::string str = animal_type + " not present in AWMS_manure_management under system " + systems[i];
-            BOOST_THROW_EXCEPTION(flint::IncompleteConfigurationException()
-                                  << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                                  << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+            throw std::runtime_error("moja.flint.example.agri:DisturbanceEventModule:" + str);
          }
 
          double EF_3_system, frac_gas, frac_leach;
@@ -368,9 +355,7 @@ void DisturbanceEventModule::simulate(const PlantEvent& plant) {
    auto crop_type = _landUnitData->getVariable("crop_type");
    if (planted) {
       std::string str = "Plant event has occured when the previous yield has not been harvested";
-      BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                            << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                            << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+      throw std::runtime_error("moja.flint.example.agri:DisturbanceEventModule:" + str);
    }
    crop_type->set_value(plant.name);
    planted = true;
@@ -392,9 +377,7 @@ void DisturbanceEventModule::onTimingStep() {
          FCR_table = _landUnitData->getVariable("FCR_table")->value().extract<const DynamicObject>();
       } catch (const std::exception& e) {
          std::string str = "Crop Type: " + crop_type + " not present in FLINTagri.db Cf_table";
-         BOOST_THROW_EXCEPTION(flint::LocalDomainError()
-                               << flint::Details(str) << flint::LibraryName("moja.flint.example.agri")
-                               << flint::ModuleName(BOOST_CURRENT_FUNCTION) << flint::ErrorCode(1));
+         throw std::runtime_error("moja.flint.example.agri:DisturbanceEventModule:" + str);
       }
 
       yield += FCR_table["Growth_Rate"]; 
